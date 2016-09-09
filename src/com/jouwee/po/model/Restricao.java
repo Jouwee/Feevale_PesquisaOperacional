@@ -1,4 +1,4 @@
-package com.jouwee.po;
+package com.jouwee.po.model;
 
 /**
  * Restrição
