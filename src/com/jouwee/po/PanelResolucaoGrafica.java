@@ -2,8 +2,8 @@ package com.jouwee.po;
 
 import com.jouwee.po.model.ResolucaoGraficaModel;
 import com.jouwee.commons.application.JavaFXView;
-import javafx.scene.control.Button;
-import javafx.scene.web.HTMLEditor;
+import javafx.scene.Node;
+import javafx.scene.layout.BorderPane;
 
 /**
  * Panel de resolução gráfica
@@ -19,13 +19,19 @@ public class PanelResolucaoGrafica extends JavaFXView<ResolucaoGraficaModel> {
      */
     public PanelResolucaoGrafica(ResolucaoGraficaModel model) {
         super(model);
-        
-        HTMLEditor htmlEditor = new HTMLEditor();
-//        htmlEditor.setPrefHeight(245);C
-        htmlEditor.setHtmlText(getModel().getEnunciado().getHtmlContent());
-        
-        setCenter(htmlEditor);
-        
+        setTop(new PanelEnunciado(model.getEnunciado()));
+        setCenter(buildCenterPanel());
+    }
+
+    /**
+     * Cria o painel central
+     * 
+     * @return Node
+     */
+    private Node buildCenterPanel() {
+        BorderPane pane = new BorderPane();
+        pane.setRight(new PanelModelo(getModel().getModeloProblema()));
+        return pane;
     }
     
 }
