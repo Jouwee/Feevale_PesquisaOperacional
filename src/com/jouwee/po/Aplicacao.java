@@ -25,6 +25,7 @@ public class Aplicacao extends Application<ResolucaoGraficaModel> {
     public Aplicacao() {
         super(new ResolucaoGraficaModel());
         setBody(new PanelResolucaoGrafica(getModel()));
+        getActionRepository().add(new AbrirExemploAction());
     }
     
 }
