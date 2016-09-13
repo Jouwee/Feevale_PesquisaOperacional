@@ -1,7 +1,5 @@
 package com.jouwee.po.model;
 
-import com.jouwee.po.model.Enunciado;
-import com.jouwee.po.model.ModeloProblemaLinear;
 import com.jouwee.commons.mvc.Model;
 
 /**
@@ -21,6 +19,7 @@ public class ResolucaoGraficaModel implements Model {
      */
     public ResolucaoGraficaModel() {
         enunciado = new Enunciado();
+        modeloProblema = new ModeloProblemaLinear();
     }    
 
     /**

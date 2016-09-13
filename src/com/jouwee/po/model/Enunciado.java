@@ -1,11 +1,13 @@
 package com.jouwee.po.model;
 
+import com.jouwee.commons.mvc.Model;
+
 /**
  * Enunciado de uma questão
  * 
  * @author Nícolas Pohren
  */
-public class Enunciado {
+public class Enunciado implements Model {
     
     /** Conteúdo HTML */
     private String htmlContent;
@@ -14,7 +16,7 @@ public class Enunciado {
      * Cria um novo enunciado
      */
     public Enunciado() {
-        htmlContent = "<html>pinto <b>pinto grosso</b></html>";
+        htmlContent = "<html></html>";
     }
 
     /**
