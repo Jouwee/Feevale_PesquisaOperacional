@@ -31,6 +31,7 @@ public class PanelResolucaoGrafica extends JavaFXView<ResolucaoGraficaModel> {
     private Node buildCenterPanel() {
         BorderPane pane = new BorderPane();
         pane.setRight(new PanelModelo(getModel().getModeloProblema()));
+        pane.setCenter(new PanelGrafico(getModel()));
         return pane;
     }
     
