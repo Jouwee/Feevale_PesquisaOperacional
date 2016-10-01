@@ -1,6 +1,7 @@
 package com.jouwee.po.model;
 
-import com.jouwee.commons.math.Function;
+import com.jouwee.commons.math.Expression;
+import com.jouwee.commons.math.ExpressionNode;
 
 /**
  * Função objetivo
@@ -12,7 +13,7 @@ public class FuncaoObjetivo {
     /** Objetivo */
     private final Objetivo objetivo;
     /** Equacao da função objetivo */
-    private final Function equacao;
+    private final Expression equacao;
 
     /**
      * Cria uma nova função objetivo
@@ -20,7 +21,7 @@ public class FuncaoObjetivo {
      * @param objetivo
      * @param equacao 
      */
-    public FuncaoObjetivo(Objetivo objetivo, Function equacao) {
+    public FuncaoObjetivo(Objetivo objetivo, Expression equacao) {
         this.objetivo = objetivo;
         this.equacao = equacao;
     }
@@ -37,9 +38,9 @@ public class FuncaoObjetivo {
     /**
      * Retorna a equacao
      * 
-     * @return Function
+     * @return ExpressionNode
      */
-    public Function getEquacao() {
+    public Expression getEquacao() {
         return equacao;
     }
     
