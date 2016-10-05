@@ -1,6 +1,8 @@
 package com.jouwee.po.model;
 
 import com.jouwee.commons.mvc.Model;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Model simplex
@@ -9,6 +11,8 @@ import com.jouwee.commons.mvc.Model;
  */
 public class SimplexModel implements Model {
     
+    /** Iterações para resolução do Simplex */
+    private final List<SimplexTableauModel> iteracoes;
     /** Enunciado da questão */
     private Enunciado enunciado;
     /** Modelo do problema */
@@ -20,6 +24,7 @@ public class SimplexModel implements Model {
     public SimplexModel() {
         enunciado = new Enunciado();
         modeloProblema = new ModeloProblemaLinear();
+        iteracoes = new ArrayList<>();
     }    
 
     /**
@@ -56,6 +61,24 @@ public class SimplexModel implements Model {
      */
     public void setModeloProblema(ModeloProblemaLinear modeloProblema) {
         this.modeloProblema = modeloProblema;
+    }
+    
+    /**
+     * Adiciona uma iteração
+     * 
+     * @param iteracao 
+     */
+    public void addIteracao(SimplexTableauModel iteracao) {
+        iteracoes.add(iteracao);
+    }
+
+    /**
+     * Retorna as iterações
+     * 
+     * @return {@code List<SimplexTableauModel>}
+     */
+    public List<SimplexTableauModel> getIteracoes() {
+        return new ArrayList<>(iteracoes);
     }
     
 }

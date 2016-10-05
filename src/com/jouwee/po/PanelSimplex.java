@@ -32,7 +32,7 @@ public class PanelSimplex extends JavaFXView<SimplexModel> {
     private Node buildCenterPanel() {
         BorderPane pane = new BorderPane();
         pane.setRight(new PanelModelo(getModel().getModeloProblema()));
-//        pane.setCenter(new PanelGrafico(getModel()));
+        pane.setCenter(new PanelAlgoritmoSimplex(getModel()));
         return pane;
     }
     

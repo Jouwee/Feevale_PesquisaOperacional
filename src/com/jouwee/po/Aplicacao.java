@@ -2,6 +2,7 @@ package com.jouwee.po;
 
 import com.jouwee.commons.application.Application;
 import com.jouwee.po.model.SimplexModel;
+import com.jouwee.po.simplex.AlgoritmoSimplex;
 
 /**
  * Classe principal da aplicação
@@ -24,6 +25,10 @@ public class Aplicacao extends Application<SimplexModel> {
      */
     public Aplicacao() {
         super(new SimplexModel());
+        
+        AlgoritmoSimplex algoritmo = new AlgoritmoSimplex(getModel());
+        algoritmo.executa();
+        
         setBody(new PanelSimplex(getModel()));
         getActionRepository().add(new AbrirExemploAction());
     }
