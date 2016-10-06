@@ -11,14 +11,19 @@ import java.util.List;
  */
 public class SimplexTableauModel implements Model {
     
+    /** Variaveis */
+    private final List<Variavel> variaveis;
     /** Linhas do tableau */
     private final List<SimplexTableauLine> lines;
 
     /**
      * Cria um novo tableau do Simplex
+     * 
+     * @param variaveis
      */
-    public SimplexTableauModel() {
+    public SimplexTableauModel(List<Variavel> variaveis) {
         lines = new ArrayList<>();
+        this.variaveis = variaveis;
     }
     
     /**
@@ -37,6 +42,15 @@ public class SimplexTableauModel implements Model {
      */
     public List<SimplexTableauLine> getLines() {
         return new ArrayList<>(lines);
+    }
+    
+    /**
+     * Retorna a lista de variáveis
+     * 
+     * @return String
+     */
+    public List<Variavel> getVariables() {
+        return new ArrayList<>(variaveis);
     }
     
 }

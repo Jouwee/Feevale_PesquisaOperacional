@@ -20,7 +20,7 @@ public class PanelSimplex extends JavaFXView<SimplexModel> {
      */
     public PanelSimplex(SimplexModel model) {
         super(model);
-        setTop(new PanelEnunciado(model.getEnunciado()));
+//        setTop(new PanelEnunciado(model.getEnunciado()));
         setCenter(buildCenterPanel());
     }
 

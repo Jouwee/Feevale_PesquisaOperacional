@@ -12,9 +12,9 @@ import java.util.Map;
 public class SimplexTableauLine implements Model {
     
     /** Coeficientes */
-    private final Map<String, Double> coeficientes;
+    private final Map<Variavel, Double> coeficientes;
     /** Variável */
-    private String variavel;
+    private Variavel variavel;
     /** Valor da variável */
     private double valor;
 
@@ -28,9 +28,9 @@ public class SimplexTableauLine implements Model {
     /**
      * Retorna a variável
      * 
-     * @return String
+     * @return Variavel
      */
-    public String getVariavel() {
+    public Variavel getVariavel() {
         return variavel;
     }
 
@@ -39,7 +39,7 @@ public class SimplexTableauLine implements Model {
      * 
      * @param variavel 
      */
-    public void setVariavel(String variavel) {
+    public void setVariavel(Variavel variavel) {
         this.variavel = variavel;
     }
 
@@ -67,7 +67,7 @@ public class SimplexTableauLine implements Model {
      * @param variavel
      * @param coeficiente 
      */
-    public void setCoeficiente(String variavel, double coeficiente) {
+    public void setCoeficiente(Variavel variavel, double coeficiente) {
         coeficientes.put(variavel, coeficiente);
     }
     
@@ -77,7 +77,7 @@ public class SimplexTableauLine implements Model {
      * @param variavel
      * @return double
      */
-    public double getCoeficiente(String variavel) {
+    public double getCoeficiente(Variavel variavel) {
         return coeficientes.get(variavel);
     }
     
