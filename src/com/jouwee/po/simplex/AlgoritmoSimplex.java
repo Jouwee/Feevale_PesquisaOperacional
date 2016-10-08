@@ -37,6 +37,9 @@ public class AlgoritmoSimplex {
         while (true) {
             identificaVariavelQueEntraNaBase();
             identificaVariavelQueSaiDaBase();
+            
+            normalizaModelo();
+            
             break;
         }
     }

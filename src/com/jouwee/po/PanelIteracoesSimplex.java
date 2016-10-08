@@ -1,6 +1,7 @@
 package com.jouwee.po;
 
 import com.jouwee.commons.application.JavaFXView;
+import com.jouwee.commons.javafx.control.Header1;
 import com.jouwee.po.model.SimplexModel;
 import javafx.scene.layout.VBox;
 
@@ -35,7 +36,10 @@ public class PanelIteracoesSimplex extends JavaFXView<SimplexModel> {
      */
     public VBox buildPanel() {
         VBox panel = new VBox();
-        panel.getChildren().add(new PanelIteracaoSimplex(getModel().getIteracoes().get(0)));
+        for (int i = 0; i < getModel().getIteracoes().size(); i++) {
+            panel.getChildren().add(new Header1("Iteracao " + 1));
+            panel.getChildren().add(new PanelIteracaoSimplex(getModel().getIteracoes().get(i)));
+        }
         return panel;
     }
 
