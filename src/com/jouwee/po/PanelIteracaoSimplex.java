@@ -65,7 +65,7 @@ public class PanelIteracaoSimplex extends JavaFXView<SimplexTableauModel> {
         for (Variavel variavel : getModel().getVariables()) {
             Label label = new Label(variavel.getName());
             if (variavel.equals(getModel().getEntraNaBase())) {
-                label.setTextFill(Color.RED);
+                label.setTextFill(Color.BLUE);
             }
             headerNodes.add(label);
         }
@@ -83,7 +83,11 @@ public class PanelIteracaoSimplex extends JavaFXView<SimplexTableauModel> {
     private Node[] buildValuesRow(int line, SimplexTableauLine simplexLine) {
         List<Node> headerNodes = new ArrayList<>();
         headerNodes.add(new Label(""));
-        headerNodes.add(new Label(simplexLine.getVariavel().getName()));
+        Label label = new Label(simplexLine.getVariavel().getName());
+        if (simplexLine.getVariavel().equals(getModel().getSaiDaBase())) {
+            label.setTextFill(Color.RED);
+        }
+        headerNodes.add(label);
         headerNodes.add(new Label(String.valueOf(simplexLine.getValor())));
         for (Variavel variavel : getModel().getVariables()) {
             headerNodes.add(new Label(String.valueOf(simplexLine.getCoeficiente(variavel))));
@@ -100,7 +104,10 @@ public class PanelIteracaoSimplex extends JavaFXView<SimplexTableauModel> {
      * @return String
      */
     private String montaLabelDivisao(SimplexTableauLine simplexLine) {
-        return String.valueOf(simplexLine);
+        double valor = simplexLine.getValor();
+        double coeficienteEntraNaBase = simplexLine.getCoeficiente(getModel().getEntraNaBase());
+        String sDivisao = String.valueOf(simplexLine.getDivisao(getModel().getEntraNaBase()));
+        return String.valueOf(valor) + " / " + String.valueOf(coeficienteEntraNaBase) + " = " + sDivisao;
     }
 
 }

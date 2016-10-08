@@ -68,7 +68,7 @@ public class AlgoritmoSimplex {
         line.setValor(14);
         line.setCoeficiente(x0, 0);
         line.setCoeficiente(a, 0.2);
-        line.setCoeficiente(b,-0.4);
+        line.setCoeficiente(b, 0.4);
         line.setCoeficiente(x1, 1);
         line.setCoeficiente(x2, 0);
         iteracao.addLine(line);
@@ -102,7 +102,16 @@ public class AlgoritmoSimplex {
      * Identifica a variável que sai da base
      */
     private void identificaVariavelQueSaiDaBase() {
-        
+        Variavel variavelMenorDivisao = null;
+        double menorDivisao = Double.MAX_VALUE;
+        for (SimplexTableauLine line : iteracao.getLines()) {
+            Double divisao = line.getDivisao(iteracao.getEntraNaBase());
+            if (divisao != null && divisao <= menorDivisao) {
+                menorDivisao = divisao;
+                variavelMenorDivisao = line.getVariavel();
+            }
+        }
+        iteracao.setSaiDaBase(variavelMenorDivisao);
     }
     
 }

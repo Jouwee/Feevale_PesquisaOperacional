@@ -20,7 +20,16 @@ public class Variavel {
     public Variavel() {
         this("", "");
     }
-
+    
+    /**
+     * Cria uma nova variável
+     * 
+     * @param name
+     */
+    public Variavel(String name) {
+        this(name, "");
+    }
+    
     /**
      * Cria uma nova variável
      * 
@@ -73,6 +82,11 @@ public class Variavel {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Variavel{" + "name=" + name + ", descricao=" + descricao + '}';
     }
     
 }

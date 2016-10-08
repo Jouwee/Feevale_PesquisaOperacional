@@ -28,7 +28,7 @@ public class PanelGrafico extends JavaFXView<ResolucaoGraficaModel> {
         super(model);
         
         CartesianPlane cartesianPlane = new CartesianPlane();
-        for (Restricao restricao : model.getModeloProblema().getRestricao()) {
+        for (Restricao restricao : model.getModeloProblema().getRestricoes()) {
             cartesianPlane.add(new FunctionRenderingBean(restricao.getEquacao().getLeftFunction()));
         }
         setCenter(cartesianPlane);

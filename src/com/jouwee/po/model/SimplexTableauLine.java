@@ -3,6 +3,7 @@ package com.jouwee.po.model;
 import com.jouwee.commons.mvc.Model;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Linha do tableau do Simplex
@@ -25,6 +26,22 @@ public class SimplexTableauLine implements Model {
         coeficientes = new HashMap<>();
     }
 
+    /**
+     * Construtor auxiliar usado para testes unitários
+     * 
+     * @param variavel
+     * @param valor
+     * @param coeficientes 
+     */
+    public SimplexTableauLine(Variavel variavel, double valor, Map.Entry<Variavel, Double>... coeficientes) {
+        this();
+        this.variavel = variavel;
+        this.valor = valor;
+        for (Map.Entry<Variavel, Double> entry : coeficientes) {
+            this.coeficientes.put(entry.getKey(), entry.getValue());
+        }
+    }
+    
     /**
      * Retorna a variável
      * 
@@ -79,6 +96,55 @@ public class SimplexTableauLine implements Model {
      */
     public double getCoeficiente(Variavel variavel) {
         return coeficientes.get(variavel);
+    }
+    
+    /**
+     * Retorna o valor da divisão com a variável que entra na base. Se o coeficiente for inválido (0 ou negativo), 
+     * retorna {@code null}
+     * 
+     * @param variavelQueEntraNaBase
+     * @return Double
+     */
+    public Double getDivisao(Variavel variavelQueEntraNaBase) {
+        if (getCoeficiente(variavelQueEntraNaBase) <= 0) {
+            return null;
+        }
+        return valor / getCoeficiente(variavelQueEntraNaBase);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 17 * hash + Objects.hashCode(this.coeficientes);
+        hash = 17 * hash + Objects.hashCode(this.variavel);
+        hash = 17 * hash + (int) (Double.doubleToLongBits(this.valor) ^ (Double.doubleToLongBits(this.valor) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final SimplexTableauLine other = (SimplexTableauLine) obj;
+        if (!Objects.equals(this.coeficientes, other.coeficientes)) {
+            return false;
+        }
+        if (!Objects.equals(this.variavel, other.variavel)) {
+            return false;
+        }
+        if (Double.doubleToLongBits(this.valor) != Double.doubleToLongBits(other.valor)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "SimplexTableauLine{" + "coeficientes=" + coeficientes + ", variavel=" + variavel + ", valor=" + valor + '}';
     }
     
 }

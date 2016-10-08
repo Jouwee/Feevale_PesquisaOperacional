@@ -18,7 +18,7 @@ public class ModeloProblemaLinear implements Model {
     /** Função para resolução */
     private FuncaoObjetivo funcaoObjetivo;
     /** Restrições */
-    private List<Restricao> restricao;
+    private List<Restricao> restricoes;
 
     /**
      * Cria um novo modelo de problema linear
@@ -31,12 +31,12 @@ public class ModeloProblemaLinear implements Model {
         
         funcaoObjetivo = new FuncaoObjetivo(Objetivo.MAXIMIZAR, new ExpressionParser().parse("0.07 * a + 0.09 * b"));
         
-        restricao = new ArrayList<>();
-        restricao.add(new Restricao("Valor total", new EquationParser().parse("a + b <= 100")));
-        restricao.add(new Restricao("Valor máximo a", new EquationParser().parse("b <= 30")));
-        restricao.add(new Restricao("Valor máximo b", new EquationParser().parse("a >= 2 * b")));
-        restricao.add(new Restricao("Não negatividade a", new EquationParser().parse("a >= 0")));
-        restricao.add(new Restricao("Não negatividade b", new EquationParser().parse("b >= 0")));
+        restricoes = new ArrayList<>();
+        restricoes.add(new Restricao("Valor total", new EquationParser().parse("a + b <= 100")));
+        restricoes.add(new Restricao("Valor máximo a", new EquationParser().parse("b <= 30")));
+        restricoes.add(new Restricao("Valor máximo b", new EquationParser().parse("a >= 2 * b")));
+        restricoes.add(new Restricao("Não negatividade a", new EquationParser().parse("a >= 0")));
+        restricoes.add(new Restricao("Não negatividade b", new EquationParser().parse("b >= 0")));
         
     }
     
@@ -49,6 +49,15 @@ public class ModeloProblemaLinear implements Model {
         return variaveis;
     }
 
+    /**
+     * Define a função objetivo
+     * 
+     * @param funcaoObjetivo 
+     */
+    public void setFuncaoObjetivo(FuncaoObjetivo funcaoObjetivo) {
+        this.funcaoObjetivo = funcaoObjetivo;
+    }
+    
     /**
      * Returna a função objetivo
      * 
@@ -63,8 +72,17 @@ public class ModeloProblemaLinear implements Model {
      * 
      * @return {@code List<Restricao>}
      */
-    public List<Restricao> getRestricao() {
-        return restricao;
+    public List<Restricao> getRestricoes() {
+        return new ArrayList<>(restricoes);
+    }
+    
+    /**
+     * Adiciona uma restrição
+     * 
+     * @param restricao 
+     */
+    public void addRestricao(Restricao restricao) {
+        restricoes.add(restricao);
     }
     
 }
