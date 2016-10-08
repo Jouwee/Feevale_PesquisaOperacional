@@ -16,6 +16,8 @@ public class AlgoritmoSimplex {
     
     /** Modelo */
     public final SimplexModel model;
+    /** Iteração atual */
+    private SimplexTableauModel iteracao;
 
     /**
      * Cria uma implementação do Algoritmo simplex
@@ -31,6 +33,12 @@ public class AlgoritmoSimplex {
      */
     public void executa() {
         normalizaModelo();
+        iteracao = model.getIteracoes().get(0);
+        while (true) {
+            identificaVariavelQueEntraNaBase();
+            identificaVariavelQueSaiDaBase();
+            break;
+        }
     }
 
     /**
@@ -74,6 +82,27 @@ public class AlgoritmoSimplex {
         line.setCoeficiente(x2, 1);
         iteracao.addLine(line);
         model.addIteracao(iteracao);
+    }
+
+    /**
+     * Identifica a variável que entra na base
+     */
+    private void identificaVariavelQueEntraNaBase() {
+        SimplexTableauLine funcaoObjetivo = iteracao.getLines().get(0);
+        Variavel variavelMenorCoeficiente = iteracao.getVariables().get(0);
+        for (Variavel variavel : iteracao.getVariables()) {
+            if (funcaoObjetivo.getCoeficiente(variavel) <= funcaoObjetivo.getCoeficiente(variavelMenorCoeficiente)) {
+                variavelMenorCoeficiente = variavel;
+            }
+        }
+        iteracao.setEntraNaBase(variavelMenorCoeficiente);
+    }
+    
+    /**
+     * Identifica a variável que sai da base
+     */
+    private void identificaVariavelQueSaiDaBase() {
+        
     }
     
 }
