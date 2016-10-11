@@ -37,7 +37,7 @@ public class PanelIteracoesSimplex extends JavaFXView<SimplexModel> {
     public VBox buildPanel() {
         VBox panel = new VBox();
         for (int i = 0; i < getModel().getIteracoes().size(); i++) {
-            panel.getChildren().add(new Header1("Iteracao " + 1));
+            panel.getChildren().add(new Header1("Iteracao " + i));
             panel.getChildren().add(new PanelIteracaoSimplex(getModel().getIteracoes().get(i)));
         }
         return panel;

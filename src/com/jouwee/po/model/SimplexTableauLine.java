@@ -89,6 +89,15 @@ public class SimplexTableauLine implements Model {
     }
     
     /**
+     * Retorna os coeficientes
+     * 
+     * @return double
+     */
+    public Map<Variavel, Double> getCoeficientes() {
+        return new HashMap<>(coeficientes);
+    }
+    
+    /**
      * Retorna o coeficiente
      * 
      * @param variavel

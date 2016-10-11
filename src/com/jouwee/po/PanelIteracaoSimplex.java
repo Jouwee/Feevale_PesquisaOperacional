@@ -4,6 +4,8 @@ import com.jouwee.commons.application.JavaFXView;
 import com.jouwee.po.model.SimplexTableauLine;
 import com.jouwee.po.model.SimplexTableauModel;
 import com.jouwee.po.model.Variavel;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.Node;
@@ -18,6 +20,8 @@ import javafx.scene.paint.Color;
  */
 public class PanelIteracaoSimplex extends JavaFXView<SimplexTableauModel> {
 
+    private final NumberFormat formatter;
+    
     /**
      * Cria o panel de iteração do simplex
      *
@@ -25,6 +29,7 @@ public class PanelIteracaoSimplex extends JavaFXView<SimplexTableauModel> {
      */
     public PanelIteracaoSimplex(SimplexTableauModel model) {
         super(model);
+        formatter = new DecimalFormat("#0.00");
         initGui();
     }
     
@@ -90,7 +95,7 @@ public class PanelIteracaoSimplex extends JavaFXView<SimplexTableauModel> {
         headerNodes.add(label);
         headerNodes.add(new Label(String.valueOf(simplexLine.getValor())));
         for (Variavel variavel : getModel().getVariables()) {
-            headerNodes.add(new Label(String.valueOf(simplexLine.getCoeficiente(variavel))));
+            headerNodes.add(new Label(formatter.format(simplexLine.getCoeficiente(variavel))));
         }
         headerNodes.add(new Label(String.valueOf(line - 1)));
         headerNodes.add(new Label(montaLabelDivisao(simplexLine)));

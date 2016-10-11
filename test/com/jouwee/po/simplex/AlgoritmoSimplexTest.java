@@ -63,6 +63,15 @@ public class AlgoritmoSimplexTest {
         }, model.getIteracoes().get(0).getLines());
         assertEquals(new Variavel("b"), model.getIteracoes().get(0).getEntraNaBase());
         assertEquals(new Variavel("x1"), model.getIteracoes().get(0).getSaiDaBase());
+        // Iteração 0 (Normalização)
+        assertEquals(new Variavel[]{x0, a, b, x1, x2}, model.getIteracoes().get(1).getVariables());
+        assertEquals(new SimplexTableauLine[]{
+//            new SimplexTableauLine(x0, 0, entry(x0, 1), entry(a, -0.2), entry(b, -0.3), entry(x1, 0), entry(x2, 0)),
+            new SimplexTableauLine(b, 35, entry(x0, 0), entry(a, 0.5), entry(b, 1), entry(x1, 2.5), entry(x2, 0)),
+//            new SimplexTableauLine(x2, 18, entry(x0, 0), entry(a, 0.4), entry(b, 0.3), entry(x1, 0), entry(x2, 1))
+        }, model.getIteracoes().get(1).getLines());
+//        assertEquals(new Variavel("b"), model.getIteracoes().get(1).getEntraNaBase());
+//        assertEquals(new Variavel("x1"), model.getIteracoes().get(1).getSaiDaBase());
 
     }
 

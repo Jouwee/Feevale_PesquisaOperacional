@@ -6,6 +6,7 @@ import com.jouwee.po.model.SimplexTableauModel;
 import com.jouwee.po.model.Variavel;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Implementação do Algoritmo Simplex
@@ -34,13 +35,11 @@ public class AlgoritmoSimplex {
     public void executa() {
         normalizaModelo();
         iteracao = model.getIteracoes().get(0);
-        while (true) {
+        while (!isIteracaoFinal()) {
             identificaVariavelQueEntraNaBase();
             identificaVariavelQueSaiDaBase();
-            
-            normalizaModelo();
-            
-            break;
+            iteracao = criaProximaIteracao(iteracao);
+            model.addIteracao(iteracao);
         }
     }
 
@@ -68,7 +67,7 @@ public class AlgoritmoSimplex {
         iteracao.addLine(line);
         line = new SimplexTableauLine();
         line.setVariavel(x1);
-        line.setValor(14);
+        line.setValor(20);
         line.setCoeficiente(x0, 0);
         line.setCoeficiente(a, 0.2);
         line.setCoeficiente(b, 0.4);
@@ -115,6 +114,75 @@ public class AlgoritmoSimplex {
             }
         }
         iteracao.setSaiDaBase(variavelMenorDivisao);
+    }
+
+    /**
+     * Cria a próxima iteração
+     * 
+     * @param iteracaoAnterior
+     * @return SimplexTableauModel
+     */
+    private SimplexTableauModel criaProximaIteracao(SimplexTableauModel iteracaoAnterior) {
+        SimplexTableauModel novaIteracao = new SimplexTableauModel(iteracaoAnterior.getVariables());
+        SimplexTableauLine lineNovaBase = criaLinhaNovaBase(iteracaoAnterior);
+        for (SimplexTableauLine line : iteracaoAnterior.getLines()) {
+            if (line.getVariavel().equals(iteracaoAnterior.getSaiDaBase())) {
+                novaIteracao.addLine(lineNovaBase);
+            } else {
+                novaIteracao.addLine(recalculaLinha(line, lineNovaBase, iteracaoAnterior.getEntraNaBase()));
+            }
+        }
+        return novaIteracao;
+    }
+
+    /**
+     * Cria a linha da nova base
+     * 
+     * @param iteracaoAnterior
+     * @return SimplexTableauLine
+     */
+    private SimplexTableauLine criaLinhaNovaBase(SimplexTableauModel iteracaoAnterior) {
+        SimplexTableauLine linhaQueSai = iteracaoAnterior.getLine(iteracaoAnterior.getSaiDaBase());
+        SimplexTableauLine linhaQueEntra = new SimplexTableauLine();
+        double coeficiente = linhaQueSai.getCoeficiente(iteracaoAnterior.getEntraNaBase());
+        linhaQueEntra.setVariavel(iteracaoAnterior.getEntraNaBase());
+        linhaQueEntra.setValor(linhaQueSai.getValor() / coeficiente);
+        for (Map.Entry<Variavel, Double> entry : linhaQueSai.getCoeficientes().entrySet()) {
+            linhaQueEntra.setCoeficiente(entry.getKey(), entry.getValue() / coeficiente);
+        }
+        return linhaQueEntra;
+    }
+
+    /**
+     * Recalcula a linha baseada no Pivo
+     * 
+     * @param linha
+     * @param pivo 
+     */
+    private SimplexTableauLine recalculaLinha(SimplexTableauLine linha, SimplexTableauLine pivo, Variavel entraNaBase) {
+        SimplexTableauLine novaLinha = new SimplexTableauLine();
+        novaLinha.setVariavel(linha.getVariavel());
+        double fator = -(linha.getCoeficiente(entraNaBase) / pivo.getCoeficiente(entraNaBase));
+        novaLinha.setValor(linha.getValor() + pivo.getValor() * fator);
+        for (Map.Entry<Variavel, Double> entry : linha.getCoeficientes().entrySet()) {
+            novaLinha.setCoeficiente(entry.getKey(), linha.getCoeficiente(entry.getKey()) + pivo.getCoeficiente(entry.getKey()) * fator);
+        }
+        return novaLinha;
+    }
+
+    /**
+     * Retorna se a iteração é final
+     * 
+     * @return boolean
+     */
+    private boolean isIteracaoFinal() {
+        SimplexTableauLine funcaoObjetivo = iteracao.getLineFuncaoObjetivo();
+        for (Map.Entry<Variavel, Double> entry : funcaoObjetivo.getCoeficientes().entrySet()) {
+            if (entry.getValue() < 0) {
+                return false;
+            }
+        }
+        return true;
     }
     
 }

@@ -40,6 +40,30 @@ public class SimplexTableauModel implements Model {
     }
 
     /**
+     * Retorna a linha da variável básica
+     * 
+     * @param variavel
+     * @return SimplexTableauLine
+     */
+    public SimplexTableauLine getLine(Variavel variavel) {
+        for (SimplexTableauLine line : lines) {
+            if (line.getVariavel().equals(variavel)) {
+                return line;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Retorna a linha da função objetiva
+     * 
+     * @return SimplexTableauLine
+     */
+    public SimplexTableauLine getLineFuncaoObjetivo() {
+        return lines.get(0);
+    }
+    
+    /**
      * Retorna as linhas do tableau
      * 
      * @return {@code List<SimplexTableauLine>}
