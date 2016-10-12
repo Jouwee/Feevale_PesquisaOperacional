@@ -37,6 +37,7 @@ public class PanelModelo extends JavaFXView<ModeloProblemaLinear>{
     private Node buildInternalPane() {
         VBox pane = new VBox();
         pane.getChildren().add(new PaneVariaveis(getModel().getVariaveis()));
+        pane.getChildren().add(new PaneFuncaoObjetivo(getModel().getFuncaoObjetivo()));
         return pane;
     }
 

@@ -47,6 +47,9 @@ public class AlgoritmoSimplex {
      * Normaliza o modelo
      */
     private void normalizaModelo() {
+        
+        System.out.println(model.getModeloProblema().getFuncaoObjetivo());
+        
         Variavel x0 = new Variavel("x0", "");
         Variavel a = new Variavel("a", "");
         Variavel b = new Variavel("b", "");

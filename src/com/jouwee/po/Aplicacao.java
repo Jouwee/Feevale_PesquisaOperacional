@@ -25,10 +25,11 @@ public class Aplicacao extends Application<SimplexModel> {
      */
     public Aplicacao() {
         super(new SimplexModel());
-        
+
         AlgoritmoSimplex algoritmo = new AlgoritmoSimplex(getModel());
         algoritmo.executa();
-        
+
+        setIcon(Aplicacao.class.getResourceAsStream("/com/jouwee/po/Icone32x32.PNG"));
         setBody(new PanelSimplex(getModel()));
         getActionRepository().add(new AbrirExemploAction());
     }

@@ -28,6 +28,7 @@ public class ModeloProblemaLinear implements Model {
         variaveis = new Variaveis();
         variaveis.add(new Variavel("a", "Quantidade investida no fundo AAA, em $1000"));
         variaveis.add(new Variavel("b", "Quantidade investida no fundo BB, em $1000"));
+        try {
         
         funcaoObjetivo = new FuncaoObjetivo(Objetivo.MAXIMIZAR, new ExpressionParser().parse("0.07 * a + 0.09 * b"));
         
@@ -37,7 +38,9 @@ public class ModeloProblemaLinear implements Model {
         restricoes.add(new Restricao("Valor máximo b", new EquationParser().parse("a >= 2 * b")));
         restricoes.add(new Restricao("Não negatividade a", new EquationParser().parse("a >= 0")));
         restricoes.add(new Restricao("Não negatividade b", new EquationParser().parse("b >= 0")));
-        
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
     
     /**

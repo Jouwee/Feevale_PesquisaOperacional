@@ -1,14 +1,14 @@
 package com.jouwee.po.model;
 
 import com.jouwee.commons.math.Expression;
-import com.jouwee.commons.math.ExpressionNode;
+import com.jouwee.commons.mvc.Model;
 
 /**
  * Função objetivo
  * 
  * @author Nícolas Pohren
  */
-public class FuncaoObjetivo {
+public class FuncaoObjetivo implements Model {
 
     /** Objetivo */
     private final Objetivo objetivo;

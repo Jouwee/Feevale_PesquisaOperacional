@@ -34,7 +34,7 @@ public class AlgoritmoSimplexTest {
     }
 
     @Test
-    public void testCase1() {
+    public void testCase1() throws Exception {
 
         Variavel x0 = new Variavel("x0", "");
         Variavel a = new Variavel("a", "");
