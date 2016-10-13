@@ -11,9 +11,16 @@ import com.jouwee.commons.mvc.Model;
 public class FuncaoObjetivo implements Model {
 
     /** Objetivo */
-    private final Objetivo objetivo;
+    private Objetivo objetivo;
     /** Equacao da função objetivo */
-    private final Expression equacao;
+    private Expression equacao;
+
+    /**
+     * Cria uma nova função objetivo
+     */
+    public FuncaoObjetivo() {
+        this(Objetivo.MAXIMIZAR, new Expression());
+    }
 
     /**
      * Cria uma nova função objetivo
@@ -36,12 +43,30 @@ public class FuncaoObjetivo implements Model {
     }
 
     /**
+     * Define o objetivo
+     * 
+     * @param objetivo 
+     */
+    public void setObjetivo(Objetivo objetivo) {
+        this.objetivo = objetivo;
+    }
+   
+    /**
      * Retorna a equacao
      * 
      * @return ExpressionNode
      */
     public Expression getEquacao() {
         return equacao;
+    }
+
+    /**
+     * Define a equação
+     * 
+     * @param equacao 
+     */    
+    public void setEquacao(Expression equacao) {
+        this.equacao = equacao;
     }
     
 }

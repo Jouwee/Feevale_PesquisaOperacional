@@ -1,9 +1,12 @@
 package com.jouwee.po;
 
 import com.jouwee.commons.application.JavaFXView;
+import com.jouwee.commons.application.ModelEvent;
 import com.jouwee.commons.javafx.JFX;
 import com.jouwee.commons.javafx.JFXClass;
+import com.jouwee.commons.javafx.ValueEvent;
 import com.jouwee.commons.javafx.control.ExpressionField;
+import com.jouwee.commons.math.Expression;
 import com.jouwee.po.model.FuncaoObjetivo;
 import com.jouwee.po.model.Objetivo;
 import javafx.collections.FXCollections;
@@ -20,6 +23,11 @@ import javafx.scene.layout.BorderPane;
  */
 class PaneFuncaoObjetivo extends JavaFXView<FuncaoObjetivo> implements JFXClass {
 
+    /** Expression field */
+    private ExpressionField expressionField;
+    /** Combo de objetivo */
+    private ComboBox<Objetivo> comboObjetivo;
+    
     /**
      * Cria o painel de edição da função objetivo 
      * 
@@ -28,6 +36,12 @@ class PaneFuncaoObjetivo extends JavaFXView<FuncaoObjetivo> implements JFXClass 
     public PaneFuncaoObjetivo(FuncaoObjetivo funcaoObjetivo) {
         super(funcaoObjetivo);
         initGui();
+        addEventHandler(ModelEvent.MODEL_CHANGED, (ModelEvent event) -> {
+            if (event.getTarget() == this) {
+                expressionField.setValue(getModel().getEquacao());
+                comboObjetivo.setValue(getModel().getObjetivo());
+            }
+        });
     }
 
     /**
@@ -58,8 +72,8 @@ class PaneFuncaoObjetivo extends JavaFXView<FuncaoObjetivo> implements JFXClass 
      * @return Node
      */
     private Node buildTipoFuncaoField() {
-        ComboBox<Objetivo> comboObjetivo = new ComboBox<>(FXCollections.observableArrayList(Objetivo.values()));
-        comboObjetivo.setValue(Objetivo.MAXIMIZAR);
+        comboObjetivo = new ComboBox<>(FXCollections.observableArrayList(Objetivo.values()));
+        comboObjetivo.setValue(getModel().getObjetivo());
         return comboObjetivo;
     }
 
@@ -69,7 +83,11 @@ class PaneFuncaoObjetivo extends JavaFXView<FuncaoObjetivo> implements JFXClass 
      * @return Node
      */
     private Node buildEquacaoFuncaoField() {
-        return new ExpressionField();
+        expressionField = new ExpressionField(getModel().getEquacao());
+        expressionField.addEventHandler(ValueEvent.TYPE, (ValueEvent event) -> {
+            getModel().setEquacao((Expression) event.getNewValue());
+        });
+        return expressionField;
     }
 
 }

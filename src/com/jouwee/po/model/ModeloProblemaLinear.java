@@ -14,33 +14,19 @@ import java.util.List;
 public class ModeloProblemaLinear implements Model {
 
     /** Variáveis do problema */
-    private Variaveis variaveis;
+    private final Variaveis variaveis;
+    /** Restrições */
+    private final List<Restricao> restricoes;
     /** Função para resolução */
     private FuncaoObjetivo funcaoObjetivo;
-    /** Restrições */
-    private List<Restricao> restricoes;
 
     /**
      * Cria um novo modelo de problema linear
      */
     public ModeloProblemaLinear() {
-        
         variaveis = new Variaveis();
-        variaveis.add(new Variavel("a", "Quantidade investida no fundo AAA, em $1000"));
-        variaveis.add(new Variavel("b", "Quantidade investida no fundo BB, em $1000"));
-        try {
-        
-        funcaoObjetivo = new FuncaoObjetivo(Objetivo.MAXIMIZAR, new ExpressionParser().parse("0.07 * a + 0.09 * b"));
-        
+        funcaoObjetivo = new FuncaoObjetivo();
         restricoes = new ArrayList<>();
-        restricoes.add(new Restricao("Valor total", new EquationParser().parse("a + b <= 100")));
-        restricoes.add(new Restricao("Valor máximo a", new EquationParser().parse("b <= 30")));
-        restricoes.add(new Restricao("Valor máximo b", new EquationParser().parse("a >= 2 * b")));
-        restricoes.add(new Restricao("Não negatividade a", new EquationParser().parse("a >= 0")));
-        restricoes.add(new Restricao("Não negatividade b", new EquationParser().parse("b >= 0")));
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
     }
     
     /**
