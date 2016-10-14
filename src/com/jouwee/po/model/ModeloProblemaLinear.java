@@ -1,7 +1,5 @@
 package com.jouwee.po.model;
 
-import com.jouwee.commons.math.EquationParser;
-import com.jouwee.commons.math.ExpressionParser;
 import com.jouwee.commons.mvc.Model;
 import java.util.ArrayList;
 import java.util.List;

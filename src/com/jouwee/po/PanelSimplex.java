@@ -3,7 +3,11 @@ package com.jouwee.po;
 
 import com.jouwee.commons.application.JavaFXView;
 import com.jouwee.commons.application.ModelEvent;
+import com.jouwee.commons.mvc.EventListener;
+import com.jouwee.commons.mvc.EventObject;
+import com.jouwee.commons.mvc.PropertyEvent;
 import com.jouwee.po.model.SimplexModel;
+import com.jouwee.po.simplex.AlgoritmoSimplex;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 
@@ -32,7 +36,20 @@ public class PanelSimplex extends JavaFXView<SimplexModel> {
             if (event.getTarget() == this) {
                 panelAlgoritmoSimplex.setModel(getModel());
                 panelModel.setModel(getModel().getModeloProblema());
+                registerListeners();
             }
+        });
+        registerListeners();
+    }
+    
+    /**
+     * Registra os listeners no modelo
+     */
+    private void registerListeners() {
+        getModel().getModeloProblema().getFuncaoObjetivo().addEventListener((PropertyEvent event1) -> {
+            System.out.println("Changed " + event1.getPropertyName() + " to " + event1.getNewValue());
+            AlgoritmoSimplex algoritmo = new AlgoritmoSimplex(getModel());
+            algoritmo.executa();        
         });
     }
 

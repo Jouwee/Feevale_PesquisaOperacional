@@ -74,6 +74,7 @@ class PaneFuncaoObjetivo extends JavaFXView<FuncaoObjetivo> implements JFXClass 
     private Node buildTipoFuncaoField() {
         comboObjetivo = new ComboBox<>(FXCollections.observableArrayList(Objetivo.values()));
         comboObjetivo.setValue(getModel().getObjetivo());
+        comboObjetivo.setDisable(true);
         return comboObjetivo;
     }
 

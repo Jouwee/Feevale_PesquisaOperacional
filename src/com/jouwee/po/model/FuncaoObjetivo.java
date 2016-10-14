@@ -2,6 +2,7 @@ package com.jouwee.po.model;
 
 import com.jouwee.commons.math.Expression;
 import com.jouwee.commons.mvc.Model;
+import com.jouwee.commons.mvc.PropertyEvent;
 
 /**
  * Função objetivo
@@ -48,7 +49,9 @@ public class FuncaoObjetivo implements Model {
      * @param objetivo 
      */
     public void setObjetivo(Objetivo objetivo) {
+        Objetivo oldValue = objetivo;
         this.objetivo = objetivo;
+        fireEvent(new PropertyEvent("objetivo", oldValue, objetivo));
     }
    
     /**
@@ -66,7 +69,9 @@ public class FuncaoObjetivo implements Model {
      * @param equacao 
      */    
     public void setEquacao(Expression equacao) {
+        Expression oldValue = equacao;
         this.equacao = equacao;
+        fireEvent(new PropertyEvent("equacao", oldValue, equacao));
     }
     
 }
