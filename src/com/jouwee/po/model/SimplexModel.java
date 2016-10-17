@@ -1,7 +1,7 @@
 package com.jouwee.po.model;
 
 import com.jouwee.commons.mvc.Model;
-import java.util.ArrayList;
+import com.jouwee.commons.mvc.PropertyEvent;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -66,12 +66,21 @@ public class SimplexModel implements Model {
     }
     
     /**
+     * Elimina as iterações
+     */
+    public void clearIteracoes() {
+        iteracoes.clear();
+        fireEvent(new PropertyEvent("iteracoes", null, iteracoes));
+    }
+    
+    /**
      * Adiciona uma iteração
      * 
      * @param iteracao 
      */
     public void addIteracao(SimplexTableauModel iteracao) {
         iteracoes.add(iteracao);
+        fireEvent(new PropertyEvent("iteracoes", null, iteracoes));
     }
     
     /**

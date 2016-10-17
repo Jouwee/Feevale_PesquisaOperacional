@@ -43,7 +43,7 @@ public class PanelSimplex extends JavaFXView<SimplexModel> {
      * Inicializa o modelo
      */
     private void initializeModel() {
-        getModel().addChildEventListener((PropertyEvent event1) -> {
+        getModel().getModeloProblema().addChildEventListener((PropertyEvent event1) -> {
             executaAlgoritmo();
         });
         executaAlgoritmo();

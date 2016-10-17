@@ -1,7 +1,9 @@
 package com.jouwee.po.model;
 
 import com.jouwee.commons.mvc.Model;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,6 +30,15 @@ public class Variaveis implements Model {
      */
     public void add(Variavel variavel) {
         variaveis.put(variavel.getName(), variavel);
+    }
+    
+    /**
+     * Retorna a lista de variáveis
+     * 
+     * @return {@code List<Variavel>}
+     */
+    public List<Variavel> getVariaveis() {
+        return new ArrayList<>(variaveis.values());
     }
     
 }

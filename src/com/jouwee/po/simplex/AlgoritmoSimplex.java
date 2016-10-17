@@ -34,6 +34,7 @@ public class AlgoritmoSimplex {
      * Executa o algoritmo Simplex
      */
     public void executa() {
+        model.clearIteracoes();
         normalizaModelo();
         iteracao = model.getIteracoes().get(0);
         while (!isIteracaoFinal()) {
@@ -52,6 +53,10 @@ public class AlgoritmoSimplex {
         Variavel x0 = new Variavel("x0", "");
         Variavel a = new Variavel("a", "");
         Variavel b = new Variavel("b", "");
+        if (model.getModeloProblema().getVariaveis().getVariaveis().size() >= 2) {
+            a = model.getModeloProblema().getVariaveis().getVariaveis().get(0);
+            b = model.getModeloProblema().getVariaveis().getVariaveis().get(1);
+        }
         Variavel x1 = new Variavel("x1", "");
         Variavel x2 = new Variavel("x2", "");
         
@@ -92,8 +97,9 @@ public class AlgoritmoSimplex {
         line.setVariavel(iteracao.getVariavel("x0"));
         line.setValor(0);
         line.setCoeficiente(iteracao.getVariavel("x0"), 1);
-        line.setCoeficiente(iteracao.getVariavel("a"), -0.2);
-        line.setCoeficiente(iteracao.getVariavel("b"), -0.3);
+        for (Variavel variavel : model.getModeloProblema().getVariaveis().getVariaveis()) {
+            line.setCoeficiente(variavel, -funcaoObjetivo.getVariableCoeficient(variavel.getName()));
+        }
         line.setCoeficiente(iteracao.getVariavel("x1"), 0);
         line.setCoeficiente(iteracao.getVariavel("x2"), 0);
         return line;

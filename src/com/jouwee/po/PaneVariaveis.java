@@ -29,7 +29,7 @@ class PaneVariaveis extends JavaFXView<Variaveis> {
      * Inicializa a interface
      */
     private void initGui() {
-        setTop(JFX.styleClass(new Label("Função objetivo"), H2));
+        setTop(JFX.styleClass(new Label("Variaveis"), H2));
         setCenter(buildVariaveisPane());
     }
 

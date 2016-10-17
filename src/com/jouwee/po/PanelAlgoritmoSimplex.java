@@ -2,6 +2,7 @@ package com.jouwee.po;
 
 import com.jouwee.commons.application.JavaFXView;
 import com.jouwee.commons.application.ModelEvent;
+import com.jouwee.commons.mvc.PropertyEvent;
 import com.jouwee.po.model.SimplexModel;
 import javafx.geometry.Insets;
 import javafx.scene.layout.VBox;
@@ -30,9 +31,21 @@ public class PanelAlgoritmoSimplex extends JavaFXView<SimplexModel> {
         initGui();
         addEventHandler(ModelEvent.MODEL_CHANGED, (ModelEvent event) -> {
             if (event.getTarget() == this) {
-                panelOriginal.setModel(getModel().getModeloProblema());
+                registraListeners();
+            }
+        });
+    }
+    
+    /**
+     * Regitra os listeners
+     */
+    private void registraListeners() {
+        panelOriginal.setModel(getModel().getModeloProblema());
+        panelNormalizacao.setModel(getModel().getEtapaNormalizacao());
+        panelIteracoes.setModel(getModel());
+        getModel().addEventListener((PropertyEvent propertyEvent) -> {
+            if (propertyEvent.getPropertyName().equals("iteracoes")) {
                 panelNormalizacao.setModel(getModel().getEtapaNormalizacao());
-                panelIteracoes.setModel(getModel());
             }
         });
     }

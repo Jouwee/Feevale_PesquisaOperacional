@@ -1,6 +1,7 @@
 package com.jouwee.po.model;
 
 import com.jouwee.commons.mvc.Model;
+import com.jouwee.commons.mvc.PropertyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,7 @@ public class SimplexTableauModel implements Model {
      */
     public void addLine(SimplexTableauLine line) {
         lines.add(line);
+        fireEvent(new PropertyEvent("lines", null, lines));
     }
 
     /**
@@ -67,6 +69,9 @@ public class SimplexTableauModel implements Model {
      * @return SimplexTableauLine
      */
     public SimplexTableauLine getLineFuncaoObjetivo() {
+        if (lines.isEmpty()) {
+            return new SimplexTableauLine();
+        }
         return lines.get(0);
     }
     

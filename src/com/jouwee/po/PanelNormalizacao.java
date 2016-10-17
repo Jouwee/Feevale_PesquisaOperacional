@@ -18,7 +18,6 @@ import com.jouwee.po.model.SimplexTableauLine;
 import com.jouwee.po.model.SimplexTableauModel;
 import com.jouwee.po.model.Variavel;
 import java.util.Map;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -55,6 +54,7 @@ public class PanelNormalizacao extends JavaFXView<SimplexTableauModel> {
         getModel().addChildEventListener((PropertyEvent propertyEvent) -> {
             updateFieldFuncaoObjetivo();
         });
+        updateFieldFuncaoObjetivo();
     }
 
     /**
