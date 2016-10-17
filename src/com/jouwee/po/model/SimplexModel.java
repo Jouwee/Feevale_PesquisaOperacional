@@ -2,7 +2,9 @@ package com.jouwee.po.model;
 
 import com.jouwee.commons.mvc.Model;
 import java.util.ArrayList;
-import java.util.List;
+import javafx.beans.InvalidationListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * Model simplex
@@ -12,7 +14,7 @@ import java.util.List;
 public class SimplexModel implements Model {
     
     /** Iterações para resolução do Simplex */
-    private final List<SimplexTableauModel> iteracoes;
+    private final ObservableList<SimplexTableauModel> iteracoes;
     /** Enunciado da questão */
     private Enunciado enunciado;
     /** Modelo do problema */
@@ -24,7 +26,7 @@ public class SimplexModel implements Model {
     public SimplexModel() {
         enunciado = new Enunciado();
         modeloProblema = new ModeloProblemaLinear();
-        iteracoes = new ArrayList<>();
+        iteracoes = FXCollections.observableArrayList();
     }    
 
     /**
@@ -71,14 +73,36 @@ public class SimplexModel implements Model {
     public void addIteracao(SimplexTableauModel iteracao) {
         iteracoes.add(iteracao);
     }
+    
+    /**
+     * Adiciona um listener as iterações
+     * 
+     * @param listener 
+     */
+    public void addListenerIteracoes(InvalidationListener listener) {
+        iteracoes.addListener(listener);
+    }
 
+    /**
+     * Retorna a etapa de normalização
+     * 
+     * @return SimplexTableauModel
+     */
+    public SimplexTableauModel getEtapaNormalizacao() {
+        if (iteracoes.isEmpty()) {
+            return new SimplexTableauModel();
+        } else {
+            return iteracoes.get(0);
+        }
+    }
+    
     /**
      * Retorna as iterações
      * 
      * @return {@code List<SimplexTableauModel>}
      */
-    public List<SimplexTableauModel> getIteracoes() {
-        return new ArrayList<>(iteracoes);
+    public ObservableList<SimplexTableauModel> getIteracoes() {
+        return FXCollections.observableArrayList(iteracoes);
     }
     
 }

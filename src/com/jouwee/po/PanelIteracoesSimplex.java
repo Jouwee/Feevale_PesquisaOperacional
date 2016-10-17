@@ -5,6 +5,8 @@ import com.jouwee.commons.application.ModelEvent;
 import com.jouwee.commons.javafx.JFX;
 import com.jouwee.commons.javafx.JFXClass;
 import com.jouwee.po.model.SimplexModel;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
@@ -28,15 +30,27 @@ public class PanelIteracoesSimplex extends JavaFXView<SimplexModel> {
         initGui();
         addEventHandler(ModelEvent.MODEL_CHANGED, (ModelEvent event) -> {
             if (event.getTarget() == this) {
-                updatePanel();
+                initializeModel();
             }
         });
+        initializeModel();
     }
+    
+    /**
+     * Inicializa o modelo
+     */
+    private void initializeModel() {
+        getModel().addListenerIteracoes((Observable observable) -> {
+            updatePanel();
+        });
+        updatePanel();
+    }
+        
     
     /**
      * Inicializa a interface
      */
-    public void initGui() {
+    private void initGui() {
         setCenter(buildPanel());
     }
     
@@ -47,7 +61,6 @@ public class PanelIteracoesSimplex extends JavaFXView<SimplexModel> {
      */
     public VBox buildPanel() {
         panel = new VBox();
-        updatePanel();
         return panel;
     }
 
@@ -57,7 +70,7 @@ public class PanelIteracoesSimplex extends JavaFXView<SimplexModel> {
     public void updatePanel() {
         panel.getChildren().clear();
         for (int i = 0; i < getModel().getIteracoes().size(); i++) {
-            panel.getChildren().add(JFX.styleClass(new Label("Iteracao " + i), JFXClass.H1));
+            panel.getChildren().add(JFX.styleClass(new Label("Iteracao " + i), JFXClass.H2));
             panel.getChildren().add(new PanelIteracaoSimplex(getModel().getIteracoes().get(i)));
         }
     }

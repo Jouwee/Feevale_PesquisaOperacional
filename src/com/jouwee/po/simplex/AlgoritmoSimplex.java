@@ -1,5 +1,6 @@
 package com.jouwee.po.simplex;
 
+import com.jouwee.commons.math.Expression;
 import com.jouwee.po.model.SimplexModel;
 import com.jouwee.po.model.SimplexTableauLine;
 import com.jouwee.po.model.SimplexTableauModel;
@@ -47,9 +48,7 @@ public class AlgoritmoSimplex {
      * Normaliza o modelo
      */
     private void normalizaModelo() {
-        
-        System.out.println(model.getModeloProblema().getFuncaoObjetivo());
-        
+       
         Variavel x0 = new Variavel("x0", "");
         Variavel a = new Variavel("a", "");
         Variavel b = new Variavel("b", "");
@@ -59,18 +58,11 @@ public class AlgoritmoSimplex {
         List<Variavel> variaveis = Arrays.asList(new Variavel[] {x0, a, b, x1, x2});
         
         SimplexTableauModel iteracao = new SimplexTableauModel(variaveis);
-        SimplexTableauLine line = new SimplexTableauLine();
-        line.setVariavel(x0);
-        line.setValor(0);
-        line.setCoeficiente(x0, 1);
-        line.setCoeficiente(a, -0.2);
-        line.setCoeficiente(b, -0.3);
-        line.setCoeficiente(x1, 0);
-        line.setCoeficiente(x2, 0);
-        iteracao.addLine(line);
+        SimplexTableauLine line;
+        iteracao.addLine(normalizaFuncaoObjetivo(iteracao));
         line = new SimplexTableauLine();
         line.setVariavel(x1);
-        line.setValor(20);
+        line.setValor(14);
         line.setCoeficiente(x0, 0);
         line.setCoeficiente(a, 0.2);
         line.setCoeficiente(b, 0.4);
@@ -87,6 +79,24 @@ public class AlgoritmoSimplex {
         line.setCoeficiente(x2, 1);
         iteracao.addLine(line);
         model.addIteracao(iteracao);
+    }
+    
+    /**
+     * Normaliza a função objetivo
+     * 
+     * @return SimplexTableauLine
+     */
+    private SimplexTableauLine normalizaFuncaoObjetivo(SimplexTableauModel iteracao) {
+        Expression funcaoObjetivo = model.getModeloProblema().getFuncaoObjetivo().getEquacao();
+        SimplexTableauLine line = new SimplexTableauLine();
+        line.setVariavel(iteracao.getVariavel("x0"));
+        line.setValor(0);
+        line.setCoeficiente(iteracao.getVariavel("x0"), 1);
+        line.setCoeficiente(iteracao.getVariavel("a"), -0.2);
+        line.setCoeficiente(iteracao.getVariavel("b"), -0.3);
+        line.setCoeficiente(iteracao.getVariavel("x1"), 0);
+        line.setCoeficiente(iteracao.getVariavel("x2"), 0);
+        return line;
     }
 
     /**

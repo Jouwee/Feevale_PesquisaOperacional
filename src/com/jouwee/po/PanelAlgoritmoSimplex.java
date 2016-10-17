@@ -3,6 +3,7 @@ package com.jouwee.po;
 import com.jouwee.commons.application.JavaFXView;
 import com.jouwee.commons.application.ModelEvent;
 import com.jouwee.po.model.SimplexModel;
+import javafx.geometry.Insets;
 import javafx.scene.layout.VBox;
 
 /**
@@ -12,6 +13,10 @@ import javafx.scene.layout.VBox;
  */
 public class PanelAlgoritmoSimplex extends JavaFXView<SimplexModel> {
 
+    /** Panel iterações simplex */
+    private PanelModeloOriginal panelOriginal;
+    /** Panel do modelo */
+    private PanelNormalizacao panelNormalizacao;
     /** Panel iterações simplex */
     private PanelIteracoesSimplex panelIteracoes;
     
@@ -25,7 +30,9 @@ public class PanelAlgoritmoSimplex extends JavaFXView<SimplexModel> {
         initGui();
         addEventHandler(ModelEvent.MODEL_CHANGED, (ModelEvent event) -> {
             if (event.getTarget() == this) {
-                panelIteracoes.setModel(model);
+                panelOriginal.setModel(getModel().getModeloProblema());
+                panelNormalizacao.setModel(getModel().getEtapaNormalizacao());
+                panelIteracoes.setModel(getModel());
             }
         });
     }
@@ -44,6 +51,9 @@ public class PanelAlgoritmoSimplex extends JavaFXView<SimplexModel> {
      */
     public VBox buildPanel() {
         VBox panel = new VBox();
+        panel.setPadding(new Insets(0, 15, 0, 15));
+        panel.getChildren().add(buildPanelModeloOriginal());
+        panel.getChildren().add(buildPanelNormalizacao());
         panel.getChildren().add(buildPanelIteracoesSimplex());
         return panel;
     }
@@ -56,6 +66,26 @@ public class PanelAlgoritmoSimplex extends JavaFXView<SimplexModel> {
     private JavaFXView buildPanelIteracoesSimplex() {
         panelIteracoes = new PanelIteracoesSimplex(getModel());
         return panelIteracoes;
+    }
+    
+    /**
+     * Cria o painel do modelo inicial
+     * 
+     * @return JavaFXView
+     */
+    private JavaFXView buildPanelModeloOriginal() {
+        panelOriginal = new PanelModeloOriginal(getModel().getModeloProblema());
+        return panelOriginal;
+    }
+    
+    /**
+     * Cria o painel de normalização
+     * 
+     * @return JavaFXView
+     */
+    private JavaFXView buildPanelNormalizacao() {
+        panelNormalizacao = new PanelNormalizacao(getModel().getEtapaNormalizacao());
+        return panelNormalizacao;
     }
 
 }

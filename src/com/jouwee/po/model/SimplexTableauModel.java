@@ -22,6 +22,13 @@ public class SimplexTableauModel implements Model {
 
     /**
      * Cria um novo tableau do Simplex
+     */
+    public SimplexTableauModel() {
+        this (new ArrayList<>());
+    }
+
+    /**
+     * Cria um novo tableau do Simplex
      * 
      * @param variaveis
      */
@@ -70,6 +77,21 @@ public class SimplexTableauModel implements Model {
      */
     public List<SimplexTableauLine> getLines() {
         return new ArrayList<>(lines);
+    }
+    
+    /**
+     * Retorna uma variável do modelo
+     * 
+     * @param name
+     * @return Variavel
+     */
+    public Variavel getVariavel(String name) {
+        for (Variavel variavel : variaveis) {
+            if (variavel.getName().equals(name)) {
+                return variavel;
+            }
+        }
+        return null;
     }
     
     /**
