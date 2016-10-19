@@ -1,10 +1,12 @@
 package com.jouwee.po.simplex;
 
 import com.jouwee.commons.math.Expression;
+import com.jouwee.po.model.Restricao;
 import com.jouwee.po.model.SimplexModel;
 import com.jouwee.po.model.SimplexTableauLine;
 import com.jouwee.po.model.SimplexTableauModel;
 import com.jouwee.po.model.Variavel;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +51,7 @@ public class AlgoritmoSimplex {
      * Normaliza o modelo
      */
     private void normalizaModelo() {
-       
+        
         Variavel x0 = new Variavel("x0", "");
         Variavel a = new Variavel("a", "");
         Variavel b = new Variavel("b", "");
@@ -62,18 +64,14 @@ public class AlgoritmoSimplex {
         
         List<Variavel> variaveis = Arrays.asList(new Variavel[] {x0, a, b, x1, x2});
         
-        SimplexTableauModel iteracao = new SimplexTableauModel(variaveis);
+        SimplexTableauModel iteracao = new SimplexTableauModel(normalizaVariaveis());
         SimplexTableauLine line;
         iteracao.addLine(normalizaFuncaoObjetivo(iteracao));
-        line = new SimplexTableauLine();
-        line.setVariavel(x1);
-        line.setValor(14);
-        line.setCoeficiente(x0, 0);
-        line.setCoeficiente(a, 0.2);
-        line.setCoeficiente(b, 0.4);
-        line.setCoeficiente(x1, 1);
-        line.setCoeficiente(x2, 0);
-        iteracao.addLine(line);
+        
+        if (!model.getModeloProblema().getRestricoes().isEmpty()) {
+            iteracao.addLine(normalizaRestricao(model.getModeloProblema().getRestricoes().get(0)));
+        }
+
         line = new SimplexTableauLine();
         line.setVariavel(x2);
         line.setValor(18);
@@ -84,6 +82,27 @@ public class AlgoritmoSimplex {
         line.setCoeficiente(x2, 1);
         iteracao.addLine(line);
         model.addIteracao(iteracao);
+    }
+
+    /**
+     * Normaliza as variáveis
+     * 
+     * @return {@code List<Variavel>}
+     */
+    private List<Variavel> normalizaVariaveis() {
+        List<Variavel> variaveis = new ArrayList<>();
+        variaveis.add(new Variavel("x0", "Função objetivo"));
+        for (Variavel variavel : model.getModeloProblema().getVariaveis().getVariaveis()) {
+            variaveis.add(variavel);
+        }
+        int i = 1;
+        for (Restricao restricao : model.getModeloProblema().getRestricoes()) {
+            if (!restricao.isNaoNegatividade()) {
+                variaveis.add(new Variavel("x" + i, "Folga para restrição \"" + restricao.getDescricao() + "\""));
+                i++;
+            }
+        }
+        return variaveis;
     }
     
     /**
@@ -203,5 +222,24 @@ public class AlgoritmoSimplex {
         }
         return true;
     }
-    
+
+    /**
+     * Normaliza uma restrição
+     * 
+     * @param restricao
+     * @return SimplexTableauLine
+     */
+    private SimplexTableauLine normalizaRestricao(Restricao restricao) {
+        SimplexTableauLine line = new SimplexTableauLine();
+        line.setVariavel(new Variavel("x1", ""));
+        line.setValor(14);
+        line.setCoeficiente(new Variavel("x0", ""), 0);
+        for (Variavel variavel : model.getModeloProblema().getVariaveis().getVariaveis()) {
+            line.setCoeficiente(variavel, restricao.getEquacao().getLeftFunction().getVariableCoeficient(variavel.getName()));
+        }
+        line.setCoeficiente(new Variavel("x1", ""), 1);
+        line.setCoeficiente(new Variavel("x2", ""), 0);
+        return line;
+    }
+
 }

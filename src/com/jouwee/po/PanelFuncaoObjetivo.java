@@ -21,7 +21,7 @@ import javafx.scene.layout.BorderPane;
  * 
  * @author Nícolas Pohren
  */
-class PaneFuncaoObjetivo extends JavaFXView<FuncaoObjetivo> implements JFXClass {
+class PanelFuncaoObjetivo extends JavaFXView<FuncaoObjetivo> implements JFXClass {
 
     /** Expression field */
     private ExpressionField expressionField;
@@ -33,7 +33,7 @@ class PaneFuncaoObjetivo extends JavaFXView<FuncaoObjetivo> implements JFXClass 
      * 
      * @param funcaoObjetivo 
      */
-    public PaneFuncaoObjetivo(FuncaoObjetivo funcaoObjetivo) {
+    public PanelFuncaoObjetivo(FuncaoObjetivo funcaoObjetivo) {
         super(funcaoObjetivo);
         initGui();
         addEventHandler(ModelEvent.MODEL_CHANGED, (ModelEvent event) -> {
@@ -50,7 +50,7 @@ class PaneFuncaoObjetivo extends JavaFXView<FuncaoObjetivo> implements JFXClass 
     private void initGui() {
         setTop(JFX.styleClass(new Label("Função objetivo"), H2));
         setCenter(buildFuncaoObjetivo());
-        setPadding(new Insets(10, 10, 10, 10));
+        setPadding(new Insets(0, 10, 0, 10));
     }
 
     /**

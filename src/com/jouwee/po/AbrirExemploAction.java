@@ -36,10 +36,10 @@ public class AbrirExemploAction extends Action {
             model.getModeloProblema().getVariaveis().add(a);
             model.getModeloProblema().getVariaveis().add(b);
             model.getModeloProblema().setFuncaoObjetivo(new FuncaoObjetivo(Objetivo.MAXIMIZAR, expressionParser.parse("0.20 * a + 0.30 * b")));
-            model.getModeloProblema().addRestricao(new Restricao("", equationParser.parse("0.2 * a + 0.4 * b <= 14")));
-            model.getModeloProblema().addRestricao(new Restricao("", equationParser.parse("0.4 * a + 0.3 * b <= 18")));
-            model.getModeloProblema().addRestricao(new Restricao("", equationParser.parse("a >= 0")));
-            model.getModeloProblema().addRestricao(new Restricao("", equationParser.parse("b >= 0")));
+            model.getModeloProblema().addRestricao(new Restricao("Sacarina", equationParser.parse("0.2 * a + 0.4 * b <= 14")));
+            model.getModeloProblema().addRestricao(new Restricao("Dextrose", equationParser.parse("0.4 * a + 0.3 * b <= 18")));
+            model.getModeloProblema().addRestricao(new Restricao("Não negatividade a", equationParser.parse("a >= 0")));
+            model.getModeloProblema().addRestricao(new Restricao("Não negatividade b", equationParser.parse("b >= 0")));
             Aplicacao.get().setModel(model);
         } catch (ParsingException e) {
             e.printStackTrace();

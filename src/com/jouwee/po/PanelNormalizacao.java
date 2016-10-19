@@ -95,6 +95,9 @@ public class PanelNormalizacao extends JavaFXView<SimplexTableauModel> {
         SimplexTableauLine funcaoObjetivo = getModel().getLineFuncaoObjetivo();
         ExpressionNode lastNode = null;
         for (Map.Entry<Variavel, Double> entry : funcaoObjetivo.getCoeficientes().entrySet()) {
+            if (entry.getKey() == null) {
+                continue;
+            }
             if (lastNode == null) {
                 lastNode = new MultiplicationNode(new AbsoluteValueNode(Math.abs(entry.getValue())), new VariableNode(entry.getKey().getName()));
             } else {

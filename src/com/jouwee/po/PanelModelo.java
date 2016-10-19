@@ -14,7 +14,9 @@ import javafx.scene.layout.VBox;
 public class PanelModelo extends JavaFXView<ModeloProblemaLinear>{
 
     /** Panel da função objetivo */
-    private PaneFuncaoObjetivo paneFuncaoObjetivo;
+    private PanelFuncaoObjetivo panelFuncaoObjetivo;
+    /** Panel da função objetivo */
+    private PanelRestricoes panelRestricoes;
     
     /**
      * Cria um novo painel de modelo
@@ -26,7 +28,8 @@ public class PanelModelo extends JavaFXView<ModeloProblemaLinear>{
         initGui();
         addEventHandler(ModelEvent.MODEL_CHANGED, (ModelEvent event) -> {
             if (event.getTarget() == this) {
-                paneFuncaoObjetivo.setModel(getModel().getFuncaoObjetivo());
+                panelFuncaoObjetivo.setModel(getModel().getFuncaoObjetivo());
+                panelRestricoes.setModel(getModel());
             }
         });
     }
@@ -46,7 +49,8 @@ public class PanelModelo extends JavaFXView<ModeloProblemaLinear>{
     private Node buildInternalPane() {
         VBox pane = new VBox();
         pane.getChildren().add(new PaneVariaveis(getModel().getVariaveis()));
-        pane.getChildren().add(buildPaneFuncaoObjetivo());
+        pane.getChildren().add(buildPanelFuncaoObjetivo());
+        pane.getChildren().add(buildPanelRestricoes());
         return pane;
     }
     
@@ -55,9 +59,19 @@ public class PanelModelo extends JavaFXView<ModeloProblemaLinear>{
      * 
      * @return Node
      */
-    private Node buildPaneFuncaoObjetivo() {
-        paneFuncaoObjetivo = new PaneFuncaoObjetivo(getModel().getFuncaoObjetivo());
-        return paneFuncaoObjetivo;
+    private Node buildPanelFuncaoObjetivo() {
+        panelFuncaoObjetivo = new PanelFuncaoObjetivo(getModel().getFuncaoObjetivo());
+        return panelFuncaoObjetivo;
+    }
+    
+    /**
+     * Cria o painel das restrições
+     * 
+     * @return Node
+     */
+    private Node buildPanelRestricoes() {
+        panelRestricoes = new PanelRestricoes(getModel());
+        return panelRestricoes;
     }
 
 }
