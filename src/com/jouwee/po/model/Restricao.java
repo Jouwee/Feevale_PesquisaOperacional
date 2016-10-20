@@ -21,6 +21,13 @@ public class Restricao implements Model {
 
     /**
      * Cria uma nova restrição
+     */
+    public Restricao() {
+        this("", new Equation(new AbsoluteValueNode(0), new AbsoluteValueNode(0), EquationType.EQUALS_TO));
+    }
+
+    /**
+     * Cria uma nova restrição
      * 
      * @param descricao
      * @param equacao 

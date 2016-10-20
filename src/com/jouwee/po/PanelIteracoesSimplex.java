@@ -70,7 +70,7 @@ public class PanelIteracoesSimplex extends JavaFXView<SimplexModel> {
     public void updatePanel() {
         panel.getChildren().clear();
         for (int i = 0; i < getModel().getIteracoes().size(); i++) {
-            panel.getChildren().add(JFX.styleClass(new Label("Iteracao " + i), JFXClass.H2));
+            panel.getChildren().add(JFX.styleClass(new Label("Iteração " + i), JFXClass.H2));
             panel.getChildren().add(new PanelIteracaoSimplex(getModel().getIteracoes().get(i)));
         }
     }

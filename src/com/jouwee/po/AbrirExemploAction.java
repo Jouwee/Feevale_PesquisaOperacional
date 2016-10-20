@@ -30,8 +30,8 @@ public class AbrirExemploAction extends Action {
         try {
             ExpressionParser expressionParser = new ExpressionParser();
             EquationParser equationParser = new EquationParser();
-            Variavel a = new Variavel("a", "");
-            Variavel b = new Variavel("b", "");
+            Variavel a = new Variavel("a", "kg de SWEET");
+            Variavel b = new Variavel("b", "kg de LO-SUGAR");
             SimplexModel model = new SimplexModel();
             model.getModeloProblema().getVariaveis().add(a);
             model.getModeloProblema().getVariaveis().add(b);

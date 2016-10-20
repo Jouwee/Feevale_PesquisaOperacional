@@ -13,12 +13,16 @@ public class Variavel {
     private final String name;
     /** Descrição da variável */
     private final String descricao;
+    /** Indica se a variável é da função objetivo */
+    private final boolean funcaoObjetivo;
+    /** Restrição que esta restrição é folga */
+    private final Restricao restricaoFolga;
 
     /**
      * Cria uma nova variável
      */
     public Variavel() {
-        this("", "");
+        this("", "", null, false);
     }
     
     /**
@@ -27,7 +31,7 @@ public class Variavel {
      * @param name
      */
     public Variavel(String name) {
-        this(name, "");
+        this(name, "", null, false);
     }
     
     /**
@@ -37,8 +41,44 @@ public class Variavel {
      * @param descricao 
      */
     public Variavel(String name, String descricao) {
+        this(name, descricao, null, false);
+    }
+    
+    /**
+     * Cria uma nova variável
+     * 
+     * @param name
+     * @param descricao 
+     * @param restricaoFolga
+     */
+    public Variavel(String name, String descricao, Restricao restricaoFolga) {
+        this(name, descricao, restricaoFolga, false);
+    }
+    
+    /**
+     * Cria uma nova variável
+     * 
+     * @param name
+     * @param descricao 
+     * @param funcaoObjetivo
+     */
+    public Variavel(String name, String descricao, boolean funcaoObjetivo) {
+        this(name, descricao, null, funcaoObjetivo);
+    }
+    
+    /**
+     * Cria uma nova variável
+     * 
+     * @param name
+     * @param descricao 
+     * @param restricaoFolga
+     * @param funcaoObjetivo
+     */
+    public Variavel(String name, String descricao, Restricao restricaoFolga, boolean funcaoObjetivo) {
         this.name = name;
         this.descricao = descricao;
+        this.restricaoFolga = restricaoFolga;
+        this.funcaoObjetivo = funcaoObjetivo;
     }
 
     /**
@@ -57,6 +97,24 @@ public class Variavel {
      */
     public String getDescricao() {
         return descricao;
+    }
+
+    /**
+     * Retorna a restrição que esta variável é folga
+     * 
+     * @return Restricao
+     */
+    public Restricao getRestricaoFolga() {
+        return restricaoFolga;
+    }
+    
+    /**
+     * Retorna se a variável é auxiliar
+     * 
+     * @return boolean
+     */
+    public boolean isAuxiliar() {
+        return funcaoObjetivo || restricaoFolga != null;
     }
 
     @Override

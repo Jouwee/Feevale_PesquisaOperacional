@@ -78,6 +78,17 @@ public class ModeloProblemaLinear implements Model {
         fireEvent(new PropertyEvent("restricoes", null, restricoes));
         restricao.addEventListener(redirecionador);
     }
+
+    /**
+     * Remove uma restrição
+     * 
+     * @param restricao 
+     */
+    public void removeRestricao(Restricao restricao) {
+        restricoes.remove(restricao);
+        fireEvent(new PropertyEvent("restricoes", null, restricoes));
+        restricao.addEventListener(redirecionador);
+    }
     
     /**
      * Redirecionador de eventos

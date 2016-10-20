@@ -100,12 +100,51 @@ public class SimplexTableauModel implements Model {
     }
     
     /**
+     * Retorna uma variável do modelo
+     * 
+     * @param restricao
+     * @return Variavel
+     */
+    public Variavel getVariavel(Restricao restricao) {
+        for (Variavel variavel : variaveis) {
+            if (restricao.equals(variavel.getRestricaoFolga())) {
+                return variavel;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Retorna a variável da função objetivo
+     * 
+     * @return Variavel
+     */
+    public Variavel getVariavelFuncaoObjetivo() {
+        return getVariavel("x0");
+    }
+    
+    /**
      * Retorna a lista de variáveis
      * 
      * @return String
      */
-    public List<Variavel> getVariables() {
+    public List<Variavel> getVariaveis() {
         return new ArrayList<>(variaveis);
+    }
+    
+    /**
+     * Retorna as variávei auxiliares
+     * 
+     * @return {@code List<Variavel>}
+     */
+    public List<Variavel> getVariaveisAuxiliares() {
+        List<Variavel> ret = new ArrayList<>();
+        for (Variavel variavel : variaveis) {
+            if (variavel.isAuxiliar()) {
+                ret.add(variavel);
+            }
+        }
+        return ret;
     }
 
     /**

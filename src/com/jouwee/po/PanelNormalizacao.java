@@ -4,6 +4,9 @@ package com.jouwee.po;
 import com.jouwee.commons.application.JavaFXView;
 import com.jouwee.commons.application.ModelEvent;
 import com.jouwee.commons.javafx.JFX;
+import static com.jouwee.commons.javafx.JFXClass.B;
+import static com.jouwee.commons.javafx.JFXClass.HEADER;
+import static com.jouwee.commons.javafx.JFXClass.TABLE;
 import com.jouwee.commons.javafx.control.EquationLabel;
 import com.jouwee.commons.math.AbsoluteValueNode;
 import com.jouwee.commons.math.DifferenceNode;
@@ -20,6 +23,7 @@ import com.jouwee.po.model.Variavel;
 import java.util.Map;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -30,6 +34,8 @@ public class PanelNormalizacao extends JavaFXView<SimplexTableauModel> {
 
     /** Campo para a função objetivo normalizada */
     private EquationLabel fieldFuncaoObjetivo;
+    /** Panel variáveis */
+    private GridPane panelVariaveis;
     
     /**
      * Cria um novo painel de normalização
@@ -53,8 +59,10 @@ public class PanelNormalizacao extends JavaFXView<SimplexTableauModel> {
     private void registraListeners() {
         getModel().addChildEventListener((PropertyEvent propertyEvent) -> {
             updateFieldFuncaoObjetivo();
+            updatePanelVariaveis();
         });
         updateFieldFuncaoObjetivo();
+        updatePanelVariaveis();
     }
 
     /**
@@ -71,10 +79,38 @@ public class PanelNormalizacao extends JavaFXView<SimplexTableauModel> {
      */
     private Node buildPane() {
         VBox pane = new VBox();
-        pane.getChildren().add(JFX.styleClass(new Label("Normalizacao"), H2));
+        pane.getChildren().add(JFX.styleClass(new Label("Normalização"), H2));
+        pane.getChildren().add(JFX.styleClass(new Label("Variáveis criadas"), H3));
+        pane.getChildren().add(JFX.styleClass(buildVariaveisCriadas(), P));
         pane.getChildren().add(JFX.styleClass(new Label("Função objetivo"), H3));
         pane.getChildren().add(JFX.styleClass(buildFuncaoObjetivo(), P));
         return pane;
+    }
+    
+    /**
+     * Cria o painel de variáveis
+     * 
+     * @return Node
+     */
+    private Node buildVariaveisCriadas() {
+        panelVariaveis = new GridPane();
+        updatePanelVariaveis();
+        return JFX.styleClass(panelVariaveis, TABLE);
+    }
+
+    /**
+     * Atualiza o painel das variáveis
+     */
+    private void updatePanelVariaveis() {
+        int linha = 0;
+        panelVariaveis.getChildren().clear();
+        panelVariaveis.addRow(linha++, JFX.styleClass(new Node[]{
+            new Label("Nome"),
+            new Label("Descrição")
+        }, HEADER));
+        for (Variavel variavel : getModel().getVariaveisAuxiliares()) {
+            panelVariaveis.addRow(linha++, JFX.styleClass(new Label(variavel.getName()), B), new Label(variavel.getDescricao()));
+        }
     }
     
     /**

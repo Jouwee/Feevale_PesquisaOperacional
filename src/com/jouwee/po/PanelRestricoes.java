@@ -2,6 +2,7 @@ package com.jouwee.po;
 
 import com.jouwee.commons.application.JavaFXView;
 import com.jouwee.commons.application.ModelEvent;
+import com.jouwee.commons.javafx.Glyphicons;
 import com.jouwee.commons.javafx.JFX;
 import static com.jouwee.commons.javafx.JFXClass.H2;
 import com.jouwee.commons.javafx.ValueEvent;
@@ -9,12 +10,13 @@ import com.jouwee.commons.javafx.control.EquationField;
 import com.jouwee.commons.mvc.PropertyEvent;
 import com.jouwee.po.model.ModeloProblemaLinear;
 import com.jouwee.po.model.Restricao;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -85,6 +87,7 @@ public class PanelRestricoes extends JavaFXView<ModeloProblemaLinear> {
         for (Restricao restricao : getModel().getRestricoes()) {
             panelRestricoes.addRow(linha++, buildRowRestricao(restricao));
         }
+        panelRestricoes.add(buildAddRestricaoButton(), 0, linha++, 3, 1);
     }
 
     /**
@@ -95,7 +98,8 @@ public class PanelRestricoes extends JavaFXView<ModeloProblemaLinear> {
     private static Node[] getHeaderRow() {
         return new Node [] {
             new Label("Nome"), 
-            new Label("Equação")
+            new Label("Equação"),
+            new Label(""),
         };
     }
 
@@ -108,7 +112,8 @@ public class PanelRestricoes extends JavaFXView<ModeloProblemaLinear> {
     private Node[] buildRowRestricao(Restricao restricao) {
         return new Node[] {
             buildFieldDescricao(restricao),
-            buildFieldEquacao(restricao)
+            buildFieldEquacao(restricao),
+            buildButtonDelete(restricao)
         };
     }
 
@@ -120,8 +125,8 @@ public class PanelRestricoes extends JavaFXView<ModeloProblemaLinear> {
      */
     private Node buildFieldDescricao(Restricao restricao) {
         TextField field = new TextField(restricao.getDescricao());
-        field.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
-            restricao.setDescricao(field.getText());
+        field.textProperty().addListener((observable, oldValue, newValue) -> {
+            restricao.setDescricao(newValue);
         });
         return field;
     }
@@ -138,6 +143,33 @@ public class PanelRestricoes extends JavaFXView<ModeloProblemaLinear> {
             restricao.setEquacao(field.getValue());
         });
         return field;
+    }
+
+    /**
+     * Cria o botão de deletar a restrição
+     * 
+     * @param restricao
+     * @return Node
+     */
+    private Node buildButtonDelete(Restricao restricao) {
+        Button button = new Button(Glyphicons.TRASH_CAN);
+        button.setOnAction((ActionEvent e) -> {
+            getModel().removeRestricao(restricao);
+        });
+        return JFX.styleClass(button, GLYPH);
+    }
+
+    /**
+     * Adiciona o botão de adicionar restrição
+     * 
+     * @return Node
+     */
+    private Node buildAddRestricaoButton() {
+        Button button = new Button("Incluir restricao");
+        button.setOnAction((ActionEvent e) -> {
+            getModel().addRestricao(new Restricao());
+        });
+        return button;
     }
 
 }

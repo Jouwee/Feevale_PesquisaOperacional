@@ -35,13 +35,12 @@ public class AlgoritmoSimplexTest {
 
     @Test
     public void testCase1() throws Exception {
-
         Variavel x0 = new Variavel("x0", "");
         Variavel a = new Variavel("a", "");
         Variavel b = new Variavel("b", "");
         Variavel x1 = new Variavel("x1", "");
         Variavel x2 = new Variavel("x2", "");
-
+        //
         SimplexModel model = new SimplexModel();
         model.getModeloProblema().getVariaveis().add(a);
         model.getModeloProblema().getVariaveis().add(b);
@@ -50,12 +49,11 @@ public class AlgoritmoSimplexTest {
         model.getModeloProblema().addRestricao(new Restricao("", equationParser.parse("0.4 * a + 0.3 * b <= 18")));
         model.getModeloProblema().addRestricao(new Restricao("", equationParser.parse("a >= 0")));
         model.getModeloProblema().addRestricao(new Restricao("", equationParser.parse("b >= 0")));
-
+        //
         AlgoritmoSimplex algoritmo = new AlgoritmoSimplex(model);
         algoritmo.executa();
-
         // Iteração 0 (Normalização)
-        assertEquals(new Variavel[]{x0, a, b, x1, x2}, model.getIteracoes().get(0).getVariables());
+        assertEquals(new Variavel[]{x0, a, b, x1, x2}, model.getIteracoes().get(0).getVariaveis());
         assertEquals(new SimplexTableauLine[]{
             new SimplexTableauLine(x0, 0, entry(x0, 1), entry(a, -0.2), entry(b, -0.3), entry(x1, 0), entry(x2, 0)),
             new SimplexTableauLine(x1, 14, entry(x0, 0), entry(a, 0.2), entry(b, 0.4), entry(x1, 1), entry(x2, 0)),
@@ -64,7 +62,7 @@ public class AlgoritmoSimplexTest {
         assertEquals(new Variavel("b"), model.getIteracoes().get(0).getEntraNaBase());
         assertEquals(new Variavel("x1"), model.getIteracoes().get(0).getSaiDaBase());
         // Iteração 1
-        assertEquals(new Variavel[]{x0, a, b, x1, x2}, model.getIteracoes().get(1).getVariables());
+        assertEquals(new Variavel[]{x0, a, b, x1, x2}, model.getIteracoes().get(1).getVariaveis());
         assertEquals(new SimplexTableauLine[]{
             new SimplexTableauLine(x0, 10.5, entry(x0, 1), entry(a, -0.05000000000000002), entry(b, 0), entry(x1, 0.75), entry(x2, 0)),
             new SimplexTableauLine(b, 35, entry(x0, 0), entry(a, 0.5), entry(b, 1), entry(x1, 2.5), entry(x2, 0)),
@@ -73,7 +71,7 @@ public class AlgoritmoSimplexTest {
         assertEquals(new Variavel("a"), model.getIteracoes().get(1).getEntraNaBase());
         assertEquals(new Variavel("x2"), model.getIteracoes().get(1).getSaiDaBase());
         // Iteração 1
-        assertEquals(new Variavel[]{x0, a, b, x1, x2}, model.getIteracoes().get(2).getVariables());
+        assertEquals(new Variavel[]{x0, a, b, x1, x2}, model.getIteracoes().get(2).getVariaveis());
         assertEquals(new SimplexTableauLine[]{
             new SimplexTableauLine(x0, 12, entry(x0, 1), entry(a, 0), entry(b, 0), entry(x1, 0.6), entry(x2, 0.20000000000000007)),
             new SimplexTableauLine(b, 20, entry(x0, 0), entry(a, 0), entry(b, 1), entry(x1, 4), entry(x2, -2)),

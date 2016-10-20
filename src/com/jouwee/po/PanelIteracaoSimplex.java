@@ -67,7 +67,7 @@ public class PanelIteracaoSimplex extends JavaFXView<SimplexTableauModel> {
         headerNodes.add(new Label("Pivô"));
         headerNodes.add(new Label("Base"));
         headerNodes.add(new Label("Valor"));
-        for (Variavel variavel : getModel().getVariables()) {
+        for (Variavel variavel : getModel().getVariaveis()) {
             Label label = new Label(variavel.getName());
             if (variavel.equals(getModel().getEntraNaBase())) {
                 label.setTextFill(Color.BLUE);
@@ -94,7 +94,7 @@ public class PanelIteracaoSimplex extends JavaFXView<SimplexTableauModel> {
         }
         headerNodes.add(label);
         headerNodes.add(new Label(String.valueOf(simplexLine.getValor())));
-        for (Variavel variavel : getModel().getVariables()) {
+        for (Variavel variavel : getModel().getVariaveis()) {
             headerNodes.add(new Label(formatter.format(simplexLine.getCoeficiente(variavel))));
         }
         headerNodes.add(new Label(String.valueOf(line - 1)));

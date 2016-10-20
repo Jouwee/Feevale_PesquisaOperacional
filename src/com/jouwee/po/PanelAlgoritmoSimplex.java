@@ -5,6 +5,7 @@ import com.jouwee.commons.application.ModelEvent;
 import com.jouwee.commons.mvc.PropertyEvent;
 import com.jouwee.po.model.SimplexModel;
 import javafx.geometry.Insets;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -14,13 +15,19 @@ import javafx.scene.layout.VBox;
  */
 public class PanelAlgoritmoSimplex extends JavaFXView<SimplexModel> {
 
-    /** Panel iterações simplex */
+    /**
+     * Panel iterações simplex
+     */
     private PanelModeloOriginal panelOriginal;
-    /** Panel do modelo */
+    /**
+     * Panel do modelo
+     */
     private PanelNormalizacao panelNormalizacao;
-    /** Panel iterações simplex */
+    /**
+     * Panel iterações simplex
+     */
     private PanelIteracoesSimplex panelIteracoes;
-    
+
     /**
      * Cria o panel do algoritmo simplex
      *
@@ -35,7 +42,7 @@ public class PanelAlgoritmoSimplex extends JavaFXView<SimplexModel> {
             }
         });
     }
-    
+
     /**
      * Regitra os listeners
      */
@@ -49,18 +56,24 @@ public class PanelAlgoritmoSimplex extends JavaFXView<SimplexModel> {
             }
         });
     }
-    
+
     /**
      * Inicializa a interface
      */
     public void initGui() {
-        setCenter(buildPanel());
+        ScrollPane scroll = new ScrollPane(buildPanel()) {
+            @Override
+            public void requestFocus() {
+            }
+        };
+        scroll.setFocusTraversable(false);
+        setCenter(scroll);
     }
-    
+
     /**
      * Cria o painel principal
-     * 
-     * @return 
+     *
+     * @return
      */
     public VBox buildPanel() {
         VBox panel = new VBox();
@@ -70,30 +83,30 @@ public class PanelAlgoritmoSimplex extends JavaFXView<SimplexModel> {
         panel.getChildren().add(buildPanelIteracoesSimplex());
         return panel;
     }
-    
+
     /**
      * Cria o painel de iterações
-     * 
+     *
      * @return JavaFXView
      */
     private JavaFXView buildPanelIteracoesSimplex() {
         panelIteracoes = new PanelIteracoesSimplex(getModel());
         return panelIteracoes;
     }
-    
+
     /**
      * Cria o painel do modelo inicial
-     * 
+     *
      * @return JavaFXView
      */
     private JavaFXView buildPanelModeloOriginal() {
         panelOriginal = new PanelModeloOriginal(getModel().getModeloProblema());
         return panelOriginal;
     }
-    
+
     /**
      * Cria o painel de normalização
-     * 
+     *
      * @return JavaFXView
      */
     private JavaFXView buildPanelNormalizacao() {
