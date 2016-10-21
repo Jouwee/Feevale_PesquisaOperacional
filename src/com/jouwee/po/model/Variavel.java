@@ -1,5 +1,7 @@
 package com.jouwee.po.model;
 
+import com.jouwee.commons.mvc.Model;
+import com.jouwee.commons.mvc.PropertyEvent;
 import java.util.Objects;
 
 /**
@@ -7,12 +9,12 @@ import java.util.Objects;
  * 
  * @author Nícolas Pohren
  */
-public class Variavel {
+public class Variavel implements Model {
     
     /** Nome da variável */
-    private final String name;
+    private String name;
     /** Descrição da variável */
-    private final String descricao;
+    private String descricao;
     /** Indica se a variável é da função objetivo */
     private final boolean funcaoObjetivo;
     /** Restrição que esta restrição é folga */
@@ -90,6 +92,12 @@ public class Variavel {
         return name;
     }
 
+    public void setName(String name) {
+        String oldValue = this.name;
+        this.name = name;
+        fireEvent(new PropertyEvent("name", oldValue, name));
+    }
+
     /**
      * Retorna a descrição da variável
      * 
@@ -97,6 +105,17 @@ public class Variavel {
      */
     public String getDescricao() {
         return descricao;
+    }
+    
+    /**
+     * Define a descrição
+     * 
+     * @param descricao 
+     */
+    public void setDescricao(String descricao) {
+        String oldValue = this.descricao;
+        this.descricao = descricao;
+        fireEvent(new PropertyEvent("descricao", oldValue, descricao));
     }
 
     /**

@@ -8,7 +8,6 @@ import com.jouwee.po.model.SimplexTableauLine;
 import com.jouwee.po.model.SimplexTableauModel;
 import com.jouwee.po.model.Variavel;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 

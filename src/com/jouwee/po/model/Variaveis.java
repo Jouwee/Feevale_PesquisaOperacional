@@ -1,10 +1,10 @@
 package com.jouwee.po.model;
 
+import com.jouwee.commons.mvc.EventListener;
 import com.jouwee.commons.mvc.Model;
+import com.jouwee.commons.mvc.PropertyEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Variáveis de um problema
@@ -14,13 +14,16 @@ import java.util.Map;
 public class Variaveis implements Model {
 
     /** Variáveis */
-    public final Map<String, Variavel> variaveis;
+    public final List<Variavel> variaveis;
+    /** Redirecionador de eventos */
+    private final EventRedirector redirecionador;
 
     /**
      * Cria as variáveis do programa
      */
     public Variaveis() {
-        variaveis = new HashMap<>();
+        variaveis = new ArrayList<>();
+        redirecionador = new EventRedirector();
     }
     
     /**
@@ -29,7 +32,20 @@ public class Variaveis implements Model {
      * @param variavel 
      */
     public void add(Variavel variavel) {
-        variaveis.put(variavel.getName(), variavel);
+        variaveis.add(variavel);
+        fireEvent(new PropertyEvent("variaveis", null, variaveis));
+        variavel.addEventListener(redirecionador);
+    }
+    
+    /**
+     * Remove uma variável da lista
+     * 
+     * @param variavel 
+     */
+    public void remove(Variavel variavel) {
+        variaveis.remove(variavel);
+        fireEvent(new PropertyEvent("variaveis", null, variaveis));
+//        variavel.removeEventListener(redirecionador);
     }
     
     /**
@@ -38,7 +54,19 @@ public class Variaveis implements Model {
      * @return {@code List<Variavel>}
      */
     public List<Variavel> getVariaveis() {
-        return new ArrayList<>(variaveis.values());
+        return new ArrayList<>(variaveis);
+    }
+    
+    /**
+     * Redirecionador de eventos
+     */
+    private class EventRedirector implements EventListener<PropertyEvent> {
+
+        @Override
+        public void observed(PropertyEvent event) {
+            Variaveis.this.fireEvent(event);
+        }
+        
     }
     
 }

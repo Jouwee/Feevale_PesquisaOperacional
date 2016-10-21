@@ -13,6 +13,8 @@ import javafx.scene.layout.VBox;
  */
 public class PanelModelo extends JavaFXView<ModeloProblemaLinear>{
 
+    /** Panel de variáveis */
+    private PaneVariaveis panelVariaveis;
     /** Panel da função objetivo */
     private PanelFuncaoObjetivo panelFuncaoObjetivo;
     /** Panel da função objetivo */
@@ -30,6 +32,7 @@ public class PanelModelo extends JavaFXView<ModeloProblemaLinear>{
             if (event.getTarget() == this) {
                 panelFuncaoObjetivo.setModel(getModel().getFuncaoObjetivo());
                 panelRestricoes.setModel(getModel());
+                panelVariaveis.setModel(getModel().getVariaveis());
             }
         });
     }
@@ -48,12 +51,22 @@ public class PanelModelo extends JavaFXView<ModeloProblemaLinear>{
      */
     private Node buildInternalPane() {
         VBox pane = new VBox();
-        pane.getChildren().add(new PaneVariaveis(getModel().getVariaveis()));
+        pane.getChildren().add(buildPanelVariaveis());
         pane.getChildren().add(buildPanelFuncaoObjetivo());
         pane.getChildren().add(buildPanelRestricoes());
         return pane;
     }
     
+    /**
+     * Cria o painel de variáveis
+     * 
+     * @return Node
+     */
+    private Node buildPanelVariaveis() {
+        panelVariaveis = new PaneVariaveis(getModel().getVariaveis());
+        return panelVariaveis;
+    }
+     
     /**
      * Cria o painel da função objetivo
      * 

@@ -15,17 +15,11 @@ import javafx.scene.layout.VBox;
  */
 public class PanelAlgoritmoSimplex extends JavaFXView<SimplexModel> {
 
-    /**
-     * Panel iterações simplex
-     */
+    /** Panel iterações simplex */
     private PanelModeloOriginal panelOriginal;
-    /**
-     * Panel do modelo
-     */
+    /** Panel do modelo */
     private PanelNormalizacao panelNormalizacao;
-    /**
-     * Panel iterações simplex
-     */
+    /** Panel iterações simplex */
     private PanelIteracoesSimplex panelIteracoes;
 
     /**

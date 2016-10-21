@@ -11,7 +11,6 @@ import com.jouwee.commons.mvc.PropertyEvent;
 import com.jouwee.po.model.ModeloProblemaLinear;
 import com.jouwee.po.model.Restricao;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -165,7 +164,7 @@ public class PanelRestricoes extends JavaFXView<ModeloProblemaLinear> {
      * @return Node
      */
     private Node buildAddRestricaoButton() {
-        Button button = new Button("Incluir restricao");
+        Button button = new Button("Incluir restrição");
         button.setOnAction((ActionEvent e) -> {
             getModel().addRestricao(new Restricao());
         });
