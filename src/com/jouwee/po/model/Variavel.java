@@ -92,6 +92,11 @@ public class Variavel implements Model {
         return name;
     }
 
+    /**
+     * Define o nome da variável
+     * 
+     * @param name 
+     */
     public void setName(String name) {
         String oldValue = this.name;
         this.name = name;

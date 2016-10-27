@@ -55,6 +55,8 @@ public class Aplicacao extends Application<SimplexModel> {
     private void initGui() {
         setIcon(Aplicacao.class.getResourceAsStream("/com/jouwee/po/Icone32x32.PNG"));
         setBody(buildSimplexPanel());
+        getActionRepository().add(new ActionNovo());
+        getActionRepository().add(new SalvarAction());
         getActionRepository().add(new AbrirExemploAction());
     }
 

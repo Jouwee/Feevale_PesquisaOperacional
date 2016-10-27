@@ -63,7 +63,6 @@ class PaneVariaveis extends JavaFXView<Variaveis> {
     private void initGui() {
         setTop(JFX.styleClass(new Label("Variáveis"), H2));
         setCenter(buildVariaveis());
-        setPadding(new Insets(0, 10, 0, 10));
     }
 
     /**

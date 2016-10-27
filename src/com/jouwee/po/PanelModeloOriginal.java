@@ -6,9 +6,11 @@ import com.jouwee.commons.javafx.JFX;
 import com.jouwee.commons.javafx.JFXClass;
 import static com.jouwee.commons.javafx.JFXClass.HEADER;
 import static com.jouwee.commons.javafx.JFXClass.TABLE;
+import com.jouwee.commons.javafx.control.EquationLabel;
 import com.jouwee.commons.javafx.control.ExpressionLabel;
 import com.jouwee.commons.mvc.PropertyEvent;
 import com.jouwee.po.model.ModeloProblemaLinear;
+import com.jouwee.po.model.Restricao;
 import com.jouwee.po.model.Variavel;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -27,8 +29,10 @@ public class PanelModeloOriginal extends JavaFXView<ModeloProblemaLinear> implem
     private Label labelFoObjetivo;
     /** Label da expressão da função objetivo */
     private ExpressionLabel labelFoExpressao;
-    /** Panel variáveis */
+    /** Panel de variáveis */
     private GridPane panelVariaveis;
+    /** Panel de restrições */
+    private GridPane panelRestricoes;
 
     /**
      * Cria o painel do modelo original
@@ -54,6 +58,7 @@ public class PanelModeloOriginal extends JavaFXView<ModeloProblemaLinear> implem
             updateLabelFoObjetivo();
             updateLabelFoExpressao();
             updatePanelVariaveis();
+            updatePanelRestricoes();
         });
     }
 
@@ -76,6 +81,8 @@ public class PanelModeloOriginal extends JavaFXView<ModeloProblemaLinear> implem
         panel.getChildren().add(JFX.styleClass(buildVariaveis(), P));
         panel.getChildren().add(JFX.styleClass(new Label("Função objetivo"), H3));
         panel.getChildren().add(JFX.styleClass(buildFuncaoObjetivo(), P));
+        panel.getChildren().add(JFX.styleClass(new Label("Restrições"), H3));
+        panel.getChildren().add(JFX.styleClass(buildRestricoes(), P));
         return panel;
     }
 
@@ -153,6 +160,32 @@ public class PanelModeloOriginal extends JavaFXView<ModeloProblemaLinear> implem
      */
     private void updateLabelFoExpressao() {
         labelFoExpressao.setValue(getModel().getFuncaoObjetivo().getEquacao());
+    }
+    
+    /**
+     * Cria o painél com as restrições
+     *
+     * @return Node
+     */
+    private Node buildRestricoes() {
+        panelRestricoes = new GridPane();
+        updatePanelRestricoes();
+        return JFX.styleClass(panelRestricoes, TABLE);
+    }
+
+    /**
+     * Atualiza o painel das restrições
+     */
+    private void updatePanelRestricoes() {
+        int linha = 0;
+        panelRestricoes.getChildren().clear();
+        panelRestricoes.addRow(linha++, JFX.styleClass(new Node[]{
+            new Label("Nome"),
+            new Label("Equação")
+        }, HEADER));
+        for (Restricao restricao : getModel().getRestricoes()) {
+            panelRestricoes.addRow(linha++, new Label(restricao.getDescricao()), new EquationLabel(restricao.getEquacao()));
+        }
     }
 
 }

@@ -50,7 +50,6 @@ class PanelFuncaoObjetivo extends JavaFXView<FuncaoObjetivo> implements JFXClass
     private void initGui() {
         setTop(JFX.styleClass(new Label("Função objetivo"), H2));
         setCenter(buildFuncaoObjetivo());
-        setPadding(new Insets(0, 10, 0, 10));
     }
 
     /**

@@ -62,7 +62,6 @@ public class PanelRestricoes extends JavaFXView<ModeloProblemaLinear> {
     private void initGui() {
         setTop(JFX.styleClass(new Label("Restrições"), H2));
         setCenter(buildRestricoes());
-        setPadding(new Insets(0, 10, 0, 10));
     }
 
     /**

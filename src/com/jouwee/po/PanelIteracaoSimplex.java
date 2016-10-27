@@ -1,6 +1,8 @@
 package com.jouwee.po;
 
 import com.jouwee.commons.application.JavaFXView;
+import com.jouwee.commons.javafx.JFX;
+import com.jouwee.commons.javafx.control.TablePane;
 import com.jouwee.po.model.SimplexTableauLine;
 import com.jouwee.po.model.SimplexTableauModel;
 import com.jouwee.po.model.Variavel;
@@ -46,9 +48,7 @@ public class PanelIteracaoSimplex extends JavaFXView<SimplexTableauModel> {
      * @return 
      */
     public GridPane buildPanel() {
-        GridPane gridPane = new GridPane();
-        gridPane.setVgap(5);
-        gridPane.setHgap(5);
+        GridPane gridPane = new TablePane();
         gridPane.addRow(0, buildHeaderRow());
         int line = 0;
         for (SimplexTableauLine simplexLine : getModel().getLines()) {

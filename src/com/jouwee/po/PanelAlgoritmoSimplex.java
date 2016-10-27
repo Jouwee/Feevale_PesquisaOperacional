@@ -2,6 +2,8 @@ package com.jouwee.po;
 
 import com.jouwee.commons.application.JavaFXView;
 import com.jouwee.commons.application.ModelEvent;
+import com.jouwee.commons.javafx.JFX;
+import static com.jouwee.commons.javafx.JFXClass.PANEL;
 import com.jouwee.commons.mvc.PropertyEvent;
 import com.jouwee.po.model.SimplexModel;
 import javafx.geometry.Insets;
@@ -62,6 +64,7 @@ public class PanelAlgoritmoSimplex extends JavaFXView<SimplexModel> {
         };
         scroll.setFocusTraversable(false);
         setCenter(scroll);
+        JFX.styleClass(this, PANEL);
     }
 
     /**
@@ -71,7 +74,6 @@ public class PanelAlgoritmoSimplex extends JavaFXView<SimplexModel> {
      */
     public VBox buildPanel() {
         VBox panel = new VBox();
-        panel.setPadding(new Insets(0, 15, 0, 15));
         panel.getChildren().add(buildPanelModeloOriginal());
         panel.getChildren().add(buildPanelNormalizacao());
         panel.getChildren().add(buildPanelIteracoesSimplex());

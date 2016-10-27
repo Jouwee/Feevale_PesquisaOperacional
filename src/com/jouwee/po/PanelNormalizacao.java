@@ -36,6 +36,8 @@ public class PanelNormalizacao extends JavaFXView<SimplexTableauModel> {
     private EquationLabel fieldFuncaoObjetivo;
     /** Panel variáveis */
     private GridPane panelVariaveis;
+    /** Panel de restrições */
+    private GridPane panelRestricoes;
     
     /**
      * Cria um novo painel de normalização
@@ -84,6 +86,8 @@ public class PanelNormalizacao extends JavaFXView<SimplexTableauModel> {
         pane.getChildren().add(JFX.styleClass(buildVariaveisCriadas(), P));
         pane.getChildren().add(JFX.styleClass(new Label("Função objetivo"), H3));
         pane.getChildren().add(JFX.styleClass(buildFuncaoObjetivo(), P));
+        pane.getChildren().add(JFX.styleClass(new Label("Restrições"), H3));
+        pane.getChildren().add(JFX.styleClass(buildPanelRestricoes(), P));
         return pane;
     }
     
@@ -147,6 +151,32 @@ public class PanelNormalizacao extends JavaFXView<SimplexTableauModel> {
         ExpressionNode rightExpression = new AbsoluteValueNode(funcaoObjetivo.getValor());
         Equation equation = new Equation(lastNode, rightExpression, EquationType.EQUALS_TO);
         fieldFuncaoObjetivo.setValue(equation);
+    }
+    
+    /**
+     * Cria o painel de restrições
+     * 
+     * @return Node
+     */
+    private Node buildPanelRestricoes() {
+        panelRestricoes = new GridPane();
+        updatePanelRestricoes();
+        return JFX.styleClass(panelRestricoes, TABLE);
+    }
+
+    /**
+     * Atualiza o painel das restricoes
+     */
+    private void updatePanelRestricoes() {
+        int linha = 0;
+        panelRestricoes.getChildren().clear();
+        panelRestricoes.addRow(linha++, JFX.styleClass(new Node[]{
+            new Label("Nome"),
+            new Label("Equacao")
+        }, HEADER));
+//        for (Variavel variavel : getModel().get()) {
+//            panelRestricoes.addRow(linha++, JFX.styleClass(new Label(variavel.getName()), B), new Label(variavel.getDescricao()));
+//        }
     }
 
 }

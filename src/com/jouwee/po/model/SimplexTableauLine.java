@@ -104,10 +104,11 @@ public class SimplexTableauLine implements Model {
      * @return double
      */
     public double getCoeficiente(Variavel variavel) {
-        if (!coeficientes.containsKey(variavel)) {
+        Double value = coeficientes.get(variavel);
+        if (value == null) {
             return 0;
         }
-        return coeficientes.get(variavel);
+        return value;
     }
     
     /**

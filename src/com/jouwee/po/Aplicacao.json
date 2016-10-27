@@ -1,0 +1,10 @@
+{
+    "menus": {
+        "roots": {
+            "file": {
+                "name" : "Arquivo",
+                "items" : {}
+            }
+        }
+    }
+}

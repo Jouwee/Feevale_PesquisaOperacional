@@ -1,6 +1,7 @@
 package com.jouwee.po.model;
 
 import com.jouwee.commons.mvc.Model;
+import com.jouwee.commons.mvc.PropertyEvent;
 
 /**
  * Enunciado de uma questão
@@ -34,7 +35,9 @@ public class Enunciado implements Model {
      * @param htmlContent 
      */
     public void setHtmlContent(String htmlContent) {
+        String oldValue = this.htmlContent;
         this.htmlContent = htmlContent;
+        fireEvent(new PropertyEvent("htmlContent", oldValue, htmlContent));
     }
     
 }

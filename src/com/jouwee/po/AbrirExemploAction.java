@@ -40,6 +40,7 @@ public class AbrirExemploAction extends Action {
             model.getModeloProblema().addRestricao(new Restricao("Dextrose", equationParser.parse("0.4 * a + 0.3 * b <= 18")));
             model.getModeloProblema().addRestricao(new Restricao("Não negatividade a", equationParser.parse("a >= 0")));
             model.getModeloProblema().addRestricao(new Restricao("Não negatividade b", equationParser.parse("b >= 0")));
+            model.getEnunciado().setHtmlContent("<b>Problema de Mistura</b>: Um fabricante de adoçante artificial mistura 14 kg de sacarina e 18 kg de dextrose para preparar 2 novos produtos: SWEET e LO-SUGAR. Cada kg de SWEET contém 0,4 kg de dextrose e 0,2 kg de sacarina, enquanto que cada kg de LO-SUGAR contém 0,3 kg de dextrose e 0,4 kg de sacarina. Se o lucro por kg de SWEET é $0,20 e de LO-SUGAR é $0,30, quantos kg de cada devem ser feitos para maximizar o lucro?");
             Aplicacao.get().setModel(model);
         } catch (ParsingException e) {
             e.printStackTrace();

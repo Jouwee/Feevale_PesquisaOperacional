@@ -3,6 +3,8 @@ package com.jouwee.po;
 
 import com.jouwee.commons.application.JavaFXView;
 import com.jouwee.commons.application.ModelEvent;
+import com.jouwee.commons.javafx.JFX;
+import static com.jouwee.commons.javafx.JFXClass.PANEL;
 import com.jouwee.po.model.ModeloProblemaLinear;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
@@ -42,6 +44,7 @@ public class PanelModelo extends JavaFXView<ModeloProblemaLinear>{
      */
     private void initGui() {
         setCenter(buildInternalPane());
+        JFX.styleClass(this, PANEL);
     }
 
     /**

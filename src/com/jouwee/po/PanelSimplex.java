@@ -19,6 +19,8 @@ public class PanelSimplex extends JavaFXView<SimplexModel> {
     private PanelModelo panelModel;
     /** Panel do algoritmo simplex */
     private PanelAlgoritmoSimplex panelAlgoritmoSimplex;
+    /** Panel do enunciado */
+    private PanelEnunciado panelEnunciado;
 
     /**
      * Cria o panel do problema simplex
@@ -27,16 +29,24 @@ public class PanelSimplex extends JavaFXView<SimplexModel> {
      */
     public PanelSimplex(SimplexModel model) {
         super(model);
-//        setTop(new PanelEnunciado(model.getEnunciado()));
-        setCenter(buildCenterPanel());
+        initGui();
         addEventHandler(ModelEvent.MODEL_CHANGED, (ModelEvent event) -> {
             if (event.getTarget() == this) {
                 panelAlgoritmoSimplex.setModel(getModel());
                 panelModel.setModel(getModel().getModeloProblema());
+                panelEnunciado.setModel(getModel().getEnunciado());
                 initializeModel();
             }
         });
         initializeModel();
+    }
+
+    /**
+     * Inicializa a interface
+     */
+    private void initGui() {
+        setCenter(buildCenterPanel());
+        setRight(buildPanelModelo());
     }
 
     /**
@@ -64,7 +74,7 @@ public class PanelSimplex extends JavaFXView<SimplexModel> {
      */
     private Node buildCenterPanel() {
         BorderPane pane = new BorderPane();
-        pane.setRight(buildPanelModelo());
+        pane.setTop(buildPanelEnunciado());
         pane.setCenter(buildPanelAlgoritmoSimplex());
         return pane;
     }
@@ -87,6 +97,16 @@ public class PanelSimplex extends JavaFXView<SimplexModel> {
     private Node buildPanelModelo() {
         panelModel = new PanelModelo(getModel().getModeloProblema());
         return panelModel;
+    }
+
+    /**
+     * Retorna o painel do enunciado
+     * 
+     * @return Node
+     */
+    private Node buildPanelEnunciado() {
+        panelEnunciado = new PanelEnunciado(getModel().getEnunciado());
+        return panelEnunciado;
     }
 
 }
