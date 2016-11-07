@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
@@ -39,6 +40,7 @@ public class PanelIteracaoSimplex extends JavaFXView<SimplexTableauModel> {
      * Inicializa a interface
      */
     public void initGui() {
+        getStylesheets().add(PanelIteracaoSimplex.class.getResource("PanelIteracaoSimplex.css").toExternalForm());
         setCenter(buildPanel());
     }
     
@@ -68,9 +70,14 @@ public class PanelIteracaoSimplex extends JavaFXView<SimplexTableauModel> {
         headerNodes.add(new Label("Base"));
         headerNodes.add(new Label("Valor"));
         for (Variavel variavel : getModel().getVariaveis()) {
-            Label label = new Label(variavel.getName());
+            Label label;
             if (variavel.equals(getModel().getEntraNaBase())) {
-                label.setTextFill(Color.BLUE);
+                label = buildExplicacao(variavel.getName(), () -> {
+                    Aplicacao.get().getExplainerController().explainEntraNaBase(variavel, getModel().getLineFuncaoObjetivo().getCoeficiente(variavel));
+                });
+                label.getStyleClass().add("entraNaBase");
+            } else {
+                label = new Label(variavel.getName());
             }
             headerNodes.add(label);
         }
@@ -87,19 +94,43 @@ public class PanelIteracaoSimplex extends JavaFXView<SimplexTableauModel> {
      */
     private Node[] buildValuesRow(int line, SimplexTableauLine simplexLine) {
         List<Node> headerNodes = new ArrayList<>();
+        Variavel variavelBase = simplexLine.getVariavel();
         headerNodes.add(new Label(""));
-        Label label = new Label(simplexLine.getVariavel().getName());
-        if (simplexLine.getVariavel().equals(getModel().getSaiDaBase())) {
+        Label label = buildExplicacao(variavelBase.getName(), () -> {
+            Aplicacao.get().getExplainerController().explainVariavelIteracao0(variavelBase);
+        });
+        if (variavelBase.equals(getModel().getSaiDaBase())) {
             label.setTextFill(Color.RED);
         }
         headerNodes.add(label);
-        headerNodes.add(new Label(String.valueOf(simplexLine.getValor())));
+        headerNodes.add(buildExplicacao(String.valueOf(simplexLine.getValor()), () -> {
+            Aplicacao.get().getExplainerController().explainValorIteracao0(variavelBase);
+        }));
         for (Variavel variavel : getModel().getVariaveis()) {
-            headerNodes.add(new Label(formatter.format(simplexLine.getCoeficiente(variavel))));
+            headerNodes.add(buildExplicacao(formatter.format(simplexLine.getCoeficiente(variavel)), () -> {
+                Aplicacao.get().getExplainerController().explainCoeficienteIteracao0(variavelBase, variavel);
+            }));
         }
         headerNodes.add(new Label(String.valueOf(line - 1)));
-        headerNodes.add(new Label(montaLabelDivisao(simplexLine)));
+        headerNodes.add(buildExplicacao(montaLabelDivisao(simplexLine), () -> {
+            Aplicacao.get().getExplainerController().explainResultadoDivisao(getModel(), simplexLine);
+        }));
         return headerNodes.toArray(new Node[]{});
+    }
+    
+    /**
+     * Cria um label de explicação
+     * 
+     * @param text
+     * @param abreExplicacao
+     * @return 
+     */
+    private Label buildExplicacao(String text, Runnable abreExplicacao) {
+        Label label = new Label(text);
+        label.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            abreExplicacao.run();
+        });
+        return JFX.styleClass(label, CLICKABLE);
     }
 
     /**
@@ -109,10 +140,7 @@ public class PanelIteracaoSimplex extends JavaFXView<SimplexTableauModel> {
      * @return String
      */
     private String montaLabelDivisao(SimplexTableauLine simplexLine) {
-        double valor = simplexLine.getValor();
-        double coeficienteEntraNaBase = simplexLine.getCoeficiente(getModel().getEntraNaBase());
-        String sDivisao = String.valueOf(simplexLine.getDivisao(getModel().getEntraNaBase()));
-        return String.valueOf(valor) + " / " + String.valueOf(coeficienteEntraNaBase) + " = " + sDivisao;
+        return simplexLine.getDivisaoFormatado(getModel().getEntraNaBase());
     }
 
 }

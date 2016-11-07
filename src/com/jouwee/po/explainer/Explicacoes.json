@@ -1,0 +1,19 @@
+{
+    "explicacoes" : {
+        "valorIteracao0": {
+            "texto": "<p>Para a primeira iteração (Iteração 0, ou Iteração de normalização), o valor é obtido diretamente das formulas normalizadas da função objetivo e das restrições.</p><p>A variável <b>${variavelBase}</b> é oriunda da <b>${origem}</b>, pegando o resultado da equação (Valor absoluto após a vírgula).</p><span class=\"equation\">${equacao}</span>"
+        },
+        "variavelIteracao0": {
+            "texto": "<p>Para a primeira iteração (Iteração 0, ou Iteração de normalização), as variáveis adicionadas no tableau são as variáveis criadas durante a normalização. A variável <b>${variavelBase}</b> foi criada a partir da <b>${origem}</b><p>"
+        },
+        "coeficienteIteracao0": {
+            "texto": "<p>Para a primeira iteração (Iteração 0, ou Iteração de normalização), o coeficiente é obtido diretamente das fórmulas normalizadas da função objetivo e das restrições.</p><p>Para isso, é olhada a fórmula da <b>${origem}</b> (Pois é a linha onde foi criada a variável <b>${variavelBase}</b>) e então é obtido diretamente o coeficiente da fórmula.</p><span class=\"equation\">${equacao}</span>"
+        },
+        "resultadoDivisao": {
+            "texto": "<p>A divisão é calculada dividindo a coluna <b>Valor</b> pelo <b>coeficiente da variável que irá entrar na base</b>.</p><p>Nesse caso, a variável que entra na base é <b>${entraNaBase}</b>, logo, a fórmula da divisão é:</p><span class=\"equation\">${equacao}</span>"
+        },
+        "entraNaBase": {
+            "texto": "<p>A variável que entra na base é decidia a partir do <b>menor coeficiente da linha 0</b> (Linha da função objetivo).</p><p>Nesse caso, o menor coeficiente é <b>${coeficiente}</b> da variável <b>${variavel}</b>, então é ela que irá entrar na base."
+        }
+    }
+}

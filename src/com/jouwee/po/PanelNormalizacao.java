@@ -8,19 +8,9 @@ import static com.jouwee.commons.javafx.JFXClass.B;
 import static com.jouwee.commons.javafx.JFXClass.HEADER;
 import static com.jouwee.commons.javafx.JFXClass.TABLE;
 import com.jouwee.commons.javafx.control.EquationLabel;
-import com.jouwee.commons.math.AbsoluteValueNode;
-import com.jouwee.commons.math.DifferenceNode;
-import com.jouwee.commons.math.Equation;
-import com.jouwee.commons.math.EquationType;
-import com.jouwee.commons.math.ExpressionNode;
-import com.jouwee.commons.math.MultiplicationNode;
-import com.jouwee.commons.math.SumNode;
-import com.jouwee.commons.math.VariableNode;
 import com.jouwee.commons.mvc.PropertyEvent;
-import com.jouwee.po.model.SimplexTableauLine;
 import com.jouwee.po.model.SimplexTableauModel;
 import com.jouwee.po.model.Variavel;
-import java.util.Map;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -132,25 +122,7 @@ public class PanelNormalizacao extends JavaFXView<SimplexTableauModel> {
      * Atualiza o campo da função objetivo normalizada
      */
     private void updateFieldFuncaoObjetivo() {
-        SimplexTableauLine funcaoObjetivo = getModel().getLineFuncaoObjetivo();
-        ExpressionNode lastNode = null;
-        for (Map.Entry<Variavel, Double> entry : funcaoObjetivo.getCoeficientes().entrySet()) {
-            if (entry.getKey() == null) {
-                continue;
-            }
-            if (lastNode == null) {
-                lastNode = new MultiplicationNode(new AbsoluteValueNode(Math.abs(entry.getValue())), new VariableNode(entry.getKey().getName()));
-            } else {
-                if (entry.getValue() < 0) {
-                    lastNode = new DifferenceNode(lastNode, new MultiplicationNode(new AbsoluteValueNode(Math.abs(entry.getValue())), new VariableNode(entry.getKey().getName())));
-                } else {
-                    lastNode = new SumNode(lastNode, new MultiplicationNode(new AbsoluteValueNode(Math.abs(entry.getValue())), new VariableNode(entry.getKey().getName())));
-                }
-            }
-        }
-        ExpressionNode rightExpression = new AbsoluteValueNode(funcaoObjetivo.getValor());
-        Equation equation = new Equation(lastNode, rightExpression, EquationType.EQUALS_TO);
-        fieldFuncaoObjetivo.setValue(equation);
+        fieldFuncaoObjetivo.setValue(getModel().getLineFuncaoObjetivo().getEquation());
     }
     
     /**

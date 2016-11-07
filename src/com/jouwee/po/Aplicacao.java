@@ -3,6 +3,8 @@ package com.jouwee.po;
 import com.jouwee.commons.application.Application;
 import com.jouwee.commons.application.JavaFXView;
 import com.jouwee.commons.application.ModelEvent;
+import com.jouwee.po.explainer.ExplainPanel;
+import com.jouwee.po.explainer.ExplainerController;
 import com.jouwee.po.model.SimplexModel;
 import com.jouwee.po.simplex.AlgoritmoSimplex;
 
@@ -17,6 +19,10 @@ public class Aplicacao extends Application<SimplexModel> {
     private static Aplicacao instance;
     /** Panel do simplex */
     private PanelSimplex simplexPanel;
+    /** Controller do Explainer */
+    private ExplainerController explainerController;
+    /** Panel de explicações */
+    private ExplainPanel explainPanel;
     
     /**
      * Cria a aplicação
@@ -35,6 +41,7 @@ public class Aplicacao extends Application<SimplexModel> {
 
         AlgoritmoSimplex algoritmo = new AlgoritmoSimplex(getModel());
         algoritmo.executa();
+        
 
         initGui();
         instance = this;
@@ -55,6 +62,7 @@ public class Aplicacao extends Application<SimplexModel> {
     private void initGui() {
         setIcon(Aplicacao.class.getResourceAsStream("/com/jouwee/po/Icone32x32.PNG"));
         setBody(buildSimplexPanel());
+        addLayer(buildExplainPanel());
         getActionRepository().add(new ActionNovo());
         getActionRepository().add(new SalvarAction());
         getActionRepository().add(new AbrirExemploAction());
@@ -64,6 +72,7 @@ public class Aplicacao extends Application<SimplexModel> {
     public void onStart() {
         addEventHandler(ModelEvent.MODEL_CHANGED, (ModelEvent event) -> {
             simplexPanel.setModel((SimplexModel) event.getNewModel());
+            explainPanel.setModel((SimplexModel) event.getNewModel());
         });
     }
 
@@ -75,6 +84,26 @@ public class Aplicacao extends Application<SimplexModel> {
     private JavaFXView buildSimplexPanel() {
         simplexPanel = new PanelSimplex(getModel());
         return simplexPanel;
+    }
+    
+    /**
+     * Cria o painel de explicações
+     * 
+     * @return JavaFXView
+     */
+    private JavaFXView buildExplainPanel() {
+        explainPanel = new ExplainPanel(getModel());
+        explainerController = new ExplainerController(explainPanel);
+        return explainPanel;
+    }
+
+    /**
+     * Returns the controller for the explainer
+     * 
+     * @return ExplainerController
+     */
+    public ExplainerController getExplainerController() {
+        return explainerController;
     }
 
 }

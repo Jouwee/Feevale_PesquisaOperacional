@@ -48,7 +48,7 @@ public class PanelEnunciado extends JavaFXView<Enunciado> {
      */
     private void initGui() {
         setCenter(buildEditorEnunciado());
-        setTop(JFX.styleClass(new Label("Enunciado"), H2));
+//        setTop(JFX.styleClass(new Label("Enunciado"), H2));
         JFX.styleClass(this, PANEL);
     }
 

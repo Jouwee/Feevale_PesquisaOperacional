@@ -1,5 +1,13 @@
 package com.jouwee.po.model;
 
+import com.jouwee.commons.math.AbsoluteValueNode;
+import com.jouwee.commons.math.DifferenceNode;
+import com.jouwee.commons.math.Equation;
+import com.jouwee.commons.math.EquationType;
+import com.jouwee.commons.math.ExpressionNode;
+import com.jouwee.commons.math.MultiplicationNode;
+import com.jouwee.commons.math.SumNode;
+import com.jouwee.commons.math.VariableNode;
 import com.jouwee.commons.mvc.Model;
 import java.util.HashMap;
 import java.util.Map;
@@ -123,6 +131,47 @@ public class SimplexTableauLine implements Model {
             return null;
         }
         return valor / getCoeficiente(variavelQueEntraNaBase);
+    }
+    
+    /**
+     * Retorna o valor da divisão com a variável que entra na base. Se o coeficiente for inválido (0 ou negativo), 
+     * retorna {@code null}
+     * 
+     * @param variavelQueEntraNaBase
+     * @return String
+     */
+    public String getDivisaoFormatado(Variavel variavelQueEntraNaBase) {
+        Double divisao = getDivisao(variavelQueEntraNaBase);
+        if (divisao == null) {
+            return "ø";
+        }
+        return String.valueOf(divisao);
+    }
+    
+    /**
+     * Retorna a equação da linha
+     * 
+     * @return Equation
+     */
+    public Equation getEquation() {
+        ExpressionNode lastNode = null;
+        for (Map.Entry<Variavel, Double> entry : getCoeficientes().entrySet()) {
+            if (entry.getKey() == null) {
+                continue;
+            }
+            if (lastNode == null) {
+                lastNode = new MultiplicationNode(new AbsoluteValueNode(Math.abs(entry.getValue())), new VariableNode(entry.getKey().getName()));
+            } else {
+                if (entry.getValue() < 0) {
+                    lastNode = new DifferenceNode(lastNode, new MultiplicationNode(new AbsoluteValueNode(Math.abs(entry.getValue())), new VariableNode(entry.getKey().getName())));
+                } else {
+                    lastNode = new SumNode(lastNode, new MultiplicationNode(new AbsoluteValueNode(Math.abs(entry.getValue())), new VariableNode(entry.getKey().getName())));
+                }
+            }
+        }
+        ExpressionNode rightExpression = new AbsoluteValueNode(getValor());
+        Equation equation = new Equation(lastNode, rightExpression, EquationType.EQUALS_TO);
+        return equation;
     }
 
     @Override

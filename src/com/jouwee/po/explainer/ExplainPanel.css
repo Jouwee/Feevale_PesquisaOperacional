@@ -1,0 +1,59 @@
+html {
+    font-family: Helvetica;
+    text-align: justify;
+    text-justify: inter-word;
+    padding: 10px;
+    font-size: 10pt;
+}
+
+p {
+    text-indent: 24pt;
+}
+
+.highlight1 {
+    color: red;
+}
+
+.equation {
+    text-align: center;
+    margin: auto;
+    font-size: 16pt;
+    font-style: italic;
+}
+
+.explain-panel {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dialog {
+    -fx-background-color: white;
+    -fx-background-radius: 3;
+}
+
+.header {
+    -fx-border-color: #AAA;
+    -fx-border-width: 0px 0px 1px 0px;
+}
+
+.header .button {
+    -fx-background-color: #AAAAAA;
+    -fx-background-insets: 3, 1, 2;
+    -fx-background-radius: 3, 2, 1;
+    -fx-padding: 1 15 3 15;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.header .button:hover {
+    -fx-background-color: red;
+}
+
+.header * {
+    -fx-font-weight: bold;
+}
+
+.web-view {
+    -fx-skin: "com.sun.javafx.scene.control.skin.LabelSkin";
+}
