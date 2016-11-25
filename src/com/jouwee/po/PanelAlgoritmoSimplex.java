@@ -6,7 +6,9 @@ import com.jouwee.commons.javafx.JFX;
 import static com.jouwee.commons.javafx.JFXClass.PANEL;
 import com.jouwee.commons.mvc.PropertyEvent;
 import com.jouwee.po.model.SimplexModel;
-import javafx.geometry.Insets;
+import javafx.application.Platform;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
@@ -23,6 +25,10 @@ public class PanelAlgoritmoSimplex extends JavaFXView<SimplexModel> {
     private PanelNormalizacao panelNormalizacao;
     /** Panel iterações simplex */
     private PanelIteracoesSimplex panelIteracoes;
+    /** Panel de resultado */
+    private PanelResultado panelResultado;
+    /** Label do erro de validação */
+    private Label erroValidacao;
 
     /**
      * Cria o panel do algoritmo simplex
@@ -43,9 +49,32 @@ public class PanelAlgoritmoSimplex extends JavaFXView<SimplexModel> {
      * Regitra os listeners
      */
     private void registraListeners() {
+        getModel().addEventListener((PropertyEvent propertyEvent) -> {
+                if (propertyEvent.getPropertyName().equals("erroValidacao")) {
+                    Platform.runLater(() -> {
+                        if (getModel().hasErroValidacao()) {
+                            erroValidacao.setVisible(true);
+                            erroValidacao.setText(getModel().getErroValidacao());
+                            panelOriginal.setVisible(false);
+                            panelNormalizacao.setVisible(false);
+                            panelIteracoes.setVisible(false);
+                            panelResultado.setVisible(false);
+                            panelNormalizacao.setVisible(false);
+                        } else {
+                            erroValidacao.setVisible(false);
+                            panelOriginal.setVisible(true);
+                            panelNormalizacao.setVisible(true);
+                            panelIteracoes.setVisible(true);
+                            panelResultado.setVisible(true);
+                            panelNormalizacao.setVisible(true);
+                        }
+                    });
+                }
+            });
         panelOriginal.setModel(getModel().getModeloProblema());
         panelNormalizacao.setModel(getModel().getEtapaNormalizacao());
         panelIteracoes.setModel(getModel());
+        panelResultado.setModel(getModel());
         getModel().addEventListener((PropertyEvent propertyEvent) -> {
             if (propertyEvent.getPropertyName().equals("iteracoes")) {
                 panelNormalizacao.setModel(getModel().getEtapaNormalizacao());
@@ -74,12 +103,25 @@ public class PanelAlgoritmoSimplex extends JavaFXView<SimplexModel> {
      */
     public VBox buildPanel() {
         VBox panel = new VBox();
+        panel.getChildren().add(buildPanelErroValidacao());
+        panel.getChildren().add(buildPanelResultado());
         panel.getChildren().add(buildPanelModeloOriginal());
         panel.getChildren().add(buildPanelNormalizacao());
         panel.getChildren().add(buildPanelIteracoesSimplex());
         return panel;
     }
 
+    /**
+     * Cria o painel de erro de validação
+     * 
+     * @return Node
+     */
+    private Node buildPanelErroValidacao() {
+        erroValidacao = new Label();
+        erroValidacao.setStyle("-fx-text-fill: red; -fx-font-weight:bold; -fx-font-size: 14pt");
+        return erroValidacao;
+    }
+    
     /**
      * Cria o painel de iterações
      *
@@ -88,6 +130,16 @@ public class PanelAlgoritmoSimplex extends JavaFXView<SimplexModel> {
     private JavaFXView buildPanelIteracoesSimplex() {
         panelIteracoes = new PanelIteracoesSimplex(getModel());
         return panelIteracoes;
+    }
+
+    /**
+     * Cria o painel de resultado
+     *
+     * @return JavaFXView
+     */
+    private JavaFXView buildPanelResultado() {
+        panelResultado = new PanelResultado(getModel());
+        return panelResultado;
     }
 
     /**

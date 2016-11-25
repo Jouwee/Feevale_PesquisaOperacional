@@ -38,11 +38,6 @@ public class Aplicacao extends Application<SimplexModel> {
      */
     public Aplicacao() {
         super(new SimplexModel());
-
-        AlgoritmoSimplex algoritmo = new AlgoritmoSimplex(getModel());
-        algoritmo.executa();
-        
-
         initGui();
         instance = this;
     }
@@ -61,6 +56,7 @@ public class Aplicacao extends Application<SimplexModel> {
      */
     private void initGui() {
         setIcon(Aplicacao.class.getResourceAsStream("/com/jouwee/po/Icone32x32.PNG"));
+        setTitle("JSimplex");
         setBody(buildSimplexPanel());
         addLayer(buildExplainPanel());
         getActionRepository().add(new ActionNovo());

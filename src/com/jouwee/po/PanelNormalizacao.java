@@ -9,8 +9,10 @@ import static com.jouwee.commons.javafx.JFXClass.HEADER;
 import static com.jouwee.commons.javafx.JFXClass.TABLE;
 import com.jouwee.commons.javafx.control.EquationLabel;
 import com.jouwee.commons.mvc.PropertyEvent;
+import com.jouwee.po.model.SimplexTableauLine;
 import com.jouwee.po.model.SimplexTableauModel;
 import com.jouwee.po.model.Variavel;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -52,9 +54,11 @@ public class PanelNormalizacao extends JavaFXView<SimplexTableauModel> {
         getModel().addChildEventListener((PropertyEvent propertyEvent) -> {
             updateFieldFuncaoObjetivo();
             updatePanelVariaveis();
+            updatePanelRestricoes();
         });
         updateFieldFuncaoObjetivo();
         updatePanelVariaveis();
+        updatePanelRestricoes();
     }
 
     /**
@@ -96,15 +100,17 @@ public class PanelNormalizacao extends JavaFXView<SimplexTableauModel> {
      * Atualiza o painel das variáveis
      */
     private void updatePanelVariaveis() {
-        int linha = 0;
-        panelVariaveis.getChildren().clear();
-        panelVariaveis.addRow(linha++, JFX.styleClass(new Node[]{
-            new Label("Nome"),
-            new Label("Descrição")
-        }, HEADER));
-        for (Variavel variavel : getModel().getVariaveisAuxiliares()) {
-            panelVariaveis.addRow(linha++, JFX.styleClass(new Label(variavel.getName()), B), new Label(variavel.getDescricao()));
-        }
+        Platform.runLater(() -> {
+            int linha = 0;
+            panelVariaveis.getChildren().clear();
+            panelVariaveis.addRow(linha++, JFX.styleClass(new Node[]{
+                new Label("Nome"),
+                new Label("Descrição")
+            }, HEADER));
+            for (Variavel variavel : getModel().getVariaveisAuxiliares()) {
+                panelVariaveis.addRow(linha++, JFX.styleClass(new Label(variavel.getName()), B), new Label(variavel.getDescricao()));
+            }
+        });
     }
     
     /**
@@ -122,7 +128,9 @@ public class PanelNormalizacao extends JavaFXView<SimplexTableauModel> {
      * Atualiza o campo da função objetivo normalizada
      */
     private void updateFieldFuncaoObjetivo() {
-        fieldFuncaoObjetivo.setValue(getModel().getLineFuncaoObjetivo().getEquation());
+        Platform.runLater(() -> {
+            fieldFuncaoObjetivo.setValue(getModel().getLineFuncaoObjetivo().getEquation());
+        });
     }
     
     /**
@@ -140,15 +148,22 @@ public class PanelNormalizacao extends JavaFXView<SimplexTableauModel> {
      * Atualiza o painel das restricoes
      */
     private void updatePanelRestricoes() {
-        int linha = 0;
-        panelRestricoes.getChildren().clear();
-        panelRestricoes.addRow(linha++, JFX.styleClass(new Node[]{
-            new Label("Nome"),
-            new Label("Equacao")
-        }, HEADER));
-//        for (Variavel variavel : getModel().get()) {
-//            panelRestricoes.addRow(linha++, JFX.styleClass(new Label(variavel.getName()), B), new Label(variavel.getDescricao()));
-//        }
+        Platform.runLater(() -> {
+            int linha = 0;
+            panelRestricoes.getChildren().clear();
+            panelRestricoes.addRow(linha++, JFX.styleClass(new Node[]{
+                new Label("Nome"),
+                new Label("Equacao")
+            }, HEADER));
+            for (SimplexTableauLine line : getModel().getLines()) {
+                if (line.getVariavel().getRestricaoFolga() != null) {
+                    panelRestricoes.addRow(linha++, JFX.styleClass(new Node[]{
+                        new Label(line.getVariavel().getRestricaoFolga().getDescricao()),
+                        new EquationLabel(line.getEquation())
+                    }));
+                }
+            }
+        });
     }
 
 }

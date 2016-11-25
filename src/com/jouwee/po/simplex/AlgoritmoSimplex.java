@@ -1,6 +1,7 @@
 package com.jouwee.po.simplex;
 
 import com.jouwee.commons.math.AbsoluteValueNode;
+import com.jouwee.commons.math.EquationType;
 import com.jouwee.commons.math.Expression;
 import com.jouwee.po.model.Restricao;
 import com.jouwee.po.model.SimplexModel;
@@ -37,6 +38,10 @@ public class AlgoritmoSimplex {
      */
     public void executa() {
         model.clearIteracoes();
+        if (!valida()) {
+            return;
+        }
+        model.setErroValidacao(null);
         normalizaModelo();
         iteracao = model.getIteracoes().get(0);
         while (!isIteracaoFinal()) {
@@ -46,12 +51,63 @@ public class AlgoritmoSimplex {
             model.addIteracao(iteracao);
         }
     }
+    
+    /**
+     * Valida o modelo
+     * 
+     * @return boolean
+     */
+    private boolean valida() {
+        if (!validaRestricoes()) {
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * Valida as restrições
+     * 
+     * @return boolean
+     */
+    private boolean validaRestricoes() {
+        for (Restricao restricao : model.getModeloProblema().getRestricoes()) {
+            if (!validaRestricao(restricao)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Valida uma restrição
+     * 
+     * @param restricao
+     * @return boolean
+     */
+    private boolean validaRestricao(Restricao restricao) {
+        if (restricao.isNaoNegatividade()) {
+            return true;
+        }
+        if (restricao.getEquacao().getType() == EquationType.EQUALS_TO) {
+            model.setErroValidacao("Tipo de restricao '=' não suportado! (%1$s)", restricao.getDescricao());
+            return false;
+        }
+        if (restricao.getEquacao().getType() == EquationType.GREATER_THAN_OR_EQUALS_TO) {
+            model.setErroValidacao("Tipo de restricao '>=' não suportado! (%1$s)", restricao.getDescricao());
+            return false;
+        }
+        if (restricao.getEquacao().getType() != EquationType.LESSER_THAN_OR_EQUALS_TO) {
+            model.setErroValidacao("Tipo de restricao não suportado! (%1$s)", restricao.getDescricao());
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Normaliza o modelo
      */
     private void normalizaModelo() {
-        iteracao = new SimplexTableauModel(normalizaVariaveis());
+        iteracao = new SimplexTableauModel(null, normalizaVariaveis());
         iteracao.addLine(normalizaFuncaoObjetivo(iteracao));        
         for (Restricao restricao : model.getModeloProblema().getRestricoes()) {
             if (!restricao.isNaoNegatividade()) {
@@ -138,7 +194,7 @@ public class AlgoritmoSimplex {
      * @return SimplexTableauModel
      */
     private SimplexTableauModel criaProximaIteracao(SimplexTableauModel iteracaoAnterior) {
-        SimplexTableauModel novaIteracao = new SimplexTableauModel(iteracaoAnterior.getVariaveis());
+        SimplexTableauModel novaIteracao = new SimplexTableauModel(iteracaoAnterior, iteracaoAnterior.getVariaveis());
         SimplexTableauLine lineNovaBase = criaLinhaNovaBase(iteracaoAnterior);
         for (SimplexTableauLine line : iteracaoAnterior.getLines()) {
             if (line.getVariavel().equals(iteracaoAnterior.getSaiDaBase())) {

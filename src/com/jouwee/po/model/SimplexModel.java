@@ -12,9 +12,11 @@ import javafx.collections.ObservableList;
  * @author Nícolas Pohren
  */
 public class SimplexModel implements Model {
-    
+
     /** Iterações para resolução do Simplex */
     private final ObservableList<SimplexTableauModel> iteracoes;
+    /** Erro de validação */
+    private String erroValidacao;
     /** Enunciado da questão */
     private Enunciado enunciado;
     /** Modelo do problema */
@@ -99,9 +101,22 @@ public class SimplexModel implements Model {
      */
     public SimplexTableauModel getEtapaNormalizacao() {
         if (iteracoes.isEmpty()) {
-            return new SimplexTableauModel();
+            return new SimplexTableauModel(null);
         } else {
             return iteracoes.get(0);
+        }
+    }
+    
+    /**
+     * Retorna a iteração final
+     * 
+     * @return SimplexTableauModel
+     */
+    public SimplexTableauModel getIteracaoFinal() {
+        if (iteracoes.isEmpty()) {
+            return new SimplexTableauModel(null);
+        } else {
+            return iteracoes.get(iteracoes.size() - 1);
         }
     }
     
@@ -112,6 +127,39 @@ public class SimplexModel implements Model {
      */
     public ObservableList<SimplexTableauModel> getIteracoes() {
         return FXCollections.observableArrayList(iteracoes);
+    }
+
+    /**
+     * Retorna se tem erro de validação
+     * 
+     * @return boolean
+     */
+    public boolean hasErroValidacao() {
+        return erroValidacao != null && !erroValidacao.isEmpty();
+    }
+    
+    /**
+     * Retorna o erro de validação que ocorreu
+     * 
+     * @return String
+     */
+    public String getErroValidacao() {
+        return erroValidacao;
+    }
+
+    /**
+     * Define o erro de validação
+     * 
+     * @param erroValidacao
+     * @param args 
+     */
+    public void setErroValidacao(String erroValidacao, Object args) {
+        setErroValidacao(String.format(erroValidacao, args));
+    }
+    
+    public void setErroValidacao(String erroValidacao) {
+        this.erroValidacao = erroValidacao;
+        fireEvent(new PropertyEvent("erroValidacao", null, erroValidacao));
     }
     
 }

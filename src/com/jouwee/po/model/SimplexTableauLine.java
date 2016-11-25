@@ -9,6 +9,7 @@ import com.jouwee.commons.math.MultiplicationNode;
 import com.jouwee.commons.math.SumNode;
 import com.jouwee.commons.math.VariableNode;
 import com.jouwee.commons.mvc.Model;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -145,7 +146,7 @@ public class SimplexTableauLine implements Model {
         if (divisao == null) {
             return "ø";
         }
-        return String.valueOf(divisao);
+        return new DecimalFormat("#0.00").format(divisao);
     }
     
     /**

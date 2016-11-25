@@ -20,21 +20,27 @@ public class SimplexTableauModel implements Model {
     private Variavel entraNaBase;
     /** Variável que vai sair da base na próxima iteração */
     private Variavel saiDaBase;
-
+    /** Iteração anterior */
+    private final SimplexTableauModel iteracaoAnterior;
+    
     /**
      * Cria um novo tableau do Simplex
+     * 
+     * @param iteracaoAnterior
      */
-    public SimplexTableauModel() {
-        this (new ArrayList<>());
+    public SimplexTableauModel(SimplexTableauModel iteracaoAnterior) {
+        this (iteracaoAnterior, new ArrayList<>());
     }
 
     /**
      * Cria um novo tableau do Simplex
      * 
+     * @param iteracaoAnterior
      * @param variaveis
      */
-    public SimplexTableauModel(List<Variavel> variaveis) {
+    public SimplexTableauModel(SimplexTableauModel iteracaoAnterior, List<Variavel> variaveis) {
         lines = new ArrayList<>();
+        this.iteracaoAnterior = iteracaoAnterior;
         this.variaveis = variaveis;
     }
     
@@ -179,6 +185,48 @@ public class SimplexTableauModel implements Model {
      */
     public void setSaiDaBase(Variavel saiDaBase) {
         this.saiDaBase = saiDaBase;
+    }
+
+    /**
+     * Retorna a iteração
+     * 
+     * @return SimplexTableauModel
+     */
+    public SimplexTableauModel getIteracaoAnterior() {
+        return iteracaoAnterior;
+    }
+
+    /**
+     * Retorna o valor da função objetivo
+     * 
+     * @return Double
+     */
+    public Double getValorFuncaoObjetivo() {
+        return getLineFuncaoObjetivo().getValor();
+    }
+
+    /**
+     * Retorna o valor de uma variável
+     * 
+     * @param variavel
+     * @return Double
+     */
+    public double getValor(Variavel variavel) {
+        SimplexTableauLine line = getLine(variavel);
+        if (line == null) {
+            return 0;
+        }
+        return line.getValor();
+    }
+
+    /**
+     * Obtém a folga de uma restrição
+     * 
+     * @param restricao
+     * @return double
+     */
+    public double getFolga(Restricao restricao) {
+        return getValor(getVariavel(restricao));
     }
     
 }

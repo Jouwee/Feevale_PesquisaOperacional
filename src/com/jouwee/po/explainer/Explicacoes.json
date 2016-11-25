@@ -13,7 +13,19 @@
             "texto": "<p>A divisão é calculada dividindo a coluna <b>Valor</b> pelo <b>coeficiente da variável que irá entrar na base</b>.</p><p>Nesse caso, a variável que entra na base é <b>${entraNaBase}</b>, logo, a fórmula da divisão é:</p><span class=\"equation\">${equacao}</span>"
         },
         "entraNaBase": {
-            "texto": "<p>A variável que entra na base é decidia a partir do <b>menor coeficiente da linha 0</b> (Linha da função objetivo).</p><p>Nesse caso, o menor coeficiente é <b>${coeficiente}</b> da variável <b>${variavel}</b>, então é ela que irá entrar na base."
+            "texto": "<p>A variável que entra na base é decidida a partir do <b>menor coeficiente da linha 0</b> (Linha da função objetivo).</p><p>Nesse caso, o menor coeficiente é <b>${coeficiente}</b> da variável <b>${variavel}</b>, então é ela que irá entrar na base</p>."
+        },
+        "saiDaBase": {
+            "texto": "<p>A variável que asi da base é escolhida analisando o <b>resultado da divisão</b>, calculado dividindo a coluna <b>Valor</b> pelo <b>coeficiente da variável que irá entrar na base</b>.</p><p>A variável que tiver o <b>menor resultado da divisão</b> será a variável que vai sair da base.</p>"
+        },
+        "variavel": {
+            "texto": "<p>Nas outras iterações além da primeira, as variáveis são simplesmente as mesmas variáveis da iteração anterior, substituindo a variável que <b>sai da base</b> pela que <b>entra na base</b></p>"
+        },
+        "variavelEntrouBase": {
+            "texto": "<p>A variável <b>${variavelEntrouBase}</b> entrou na base nesta iteração, substituindo <b>${variavelSaiuBase}</b>.</p><p>Para calcular o seu valor, devemos pegar a linha da variável <b>${variavelSaiuBase}</b> da iteração anterior (Demonstrada abaixo) e conseguir transformar o coeficiente de <b>${variavelEntrouBase}</b> em 1 (um), para que ela se torne uma variável base válida.</p><span class=\"equation\">${expressaoIteracaoAnterior}</span><p>Para isso, dividimos a linha/expressão inteira pelo coeficiente de <b>${variavelEntrouBase}</b>, que é <b>${coeficienteEntrouNaBase}</b>, e o resultado dessa divisão será a linha da nova iteração, relativa a variável <b>${variavelEntrouBase}</b>.</p><p>Ao multiplicar cada coeficiente da expressão por <b>${coeficienteEntrouNaBase}</b>, obtemos a seguinte expressão:</p><span class=\"equation\">${expressaoIteracaoAtual}</span>"
+        },
+        "calculoLinha": {
+            "texto": "<p>Na última iteração, a variável <b>${variavelEntrouBase}</b> entrou na base, substituindo <b>${variavelSaiuBase}</b>.</p><p>Para que a variável <b>${variavelEntrouBase}</b> seja considerada base, o seu coeficiente nesta linha deve ser <b>0</b> (Zero).</p><p>Para conseguirmos alcançar isso, pegamos uma <b>linha pivô</b> que pode ser qualquer linha do tableau menos a própria que estamos modificando, e transformamos o coeficiente de <b>${variavelEntrouBase}</b> em <b>${coeficienteEntrouNaBase}</b>, de forma que possamos subtrair a linha pivô da linha que queremos modificar.</p><p>Esta implementação do algoritmo simples utiliza sempre a <b>linha da variável que entrou na base como pivô</b>. Logo, precisamos multiplicar a expressão abaixo por um multiplicador de forma que o coeficiente de <b>${variavelEntrouBase}</b> fique como 0. Para descobrir esse multiplicador, pegamos o <b>coeficiente da variável que entrou na base na linha pivô</b> (${variavelEntrouBase} = ${coeficienteEntrouNaBase}) e multiplicamos pelo <b>coeficiente da variável que entrou na base na linha atual </b> (${variavelEntrouBase} = ${coeficienteEntrouNaBaseLinhaAtual}). Neste caso, o multiplicador será ${multiplicador} (${coeficienteEntrouNaBase} * ${coeficienteEntrouNaBaseLinhaAtual} = ${multiplicador}).</p><p>Então nós <b>aplicamos o multiplicador ${multiplicador} à linha pivô</b>:</p><span class=\"equation\">${expressaoPivo}</span><p>E em seguida <b>subtraímos a linha pivô multiplicada da linha atual</b>:</p><span class=\"equation\">${expressaoIteracaoAnterior}</span><p>Obtendo a nova linha atual:</p><span class=\"equation\">${expressaoAtual}</span>"
         }
     }
 }

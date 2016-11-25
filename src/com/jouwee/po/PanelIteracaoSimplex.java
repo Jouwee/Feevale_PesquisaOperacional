@@ -23,16 +23,20 @@ import javafx.scene.paint.Color;
  */
 public class PanelIteracaoSimplex extends JavaFXView<SimplexTableauModel> {
 
+    /** Formatter */
     private final NumberFormat formatter;
+    /** Iteração */
+    private final int iteracao;
     
     /**
      * Cria o panel de iteração do simplex
      *
      * @param model
      */
-    public PanelIteracaoSimplex(SimplexTableauModel model) {
+    public PanelIteracaoSimplex(SimplexTableauModel model, int iteracao) {
         super(model);
         formatter = new DecimalFormat("#0.00");
+        this.iteracao = iteracao;
         initGui();
     }
     
@@ -66,7 +70,6 @@ public class PanelIteracaoSimplex extends JavaFXView<SimplexTableauModel> {
      */
     private Node[] buildHeaderRow() {
         List<Node> headerNodes = new ArrayList<>();
-        headerNodes.add(new Label("Pivô"));
         headerNodes.add(new Label("Base"));
         headerNodes.add(new Label("Valor"));
         for (Variavel variavel : getModel().getVariaveis()) {
@@ -95,27 +98,79 @@ public class PanelIteracaoSimplex extends JavaFXView<SimplexTableauModel> {
     private Node[] buildValuesRow(int line, SimplexTableauLine simplexLine) {
         List<Node> headerNodes = new ArrayList<>();
         Variavel variavelBase = simplexLine.getVariavel();
-        headerNodes.add(new Label(""));
         Label label = buildExplicacao(variavelBase.getName(), () -> {
-            Aplicacao.get().getExplainerController().explainVariavelIteracao0(variavelBase);
+            if (iteracao == 0) {
+                Aplicacao.get().getExplainerController().explainVariavelIteracao0(variavelBase);
+            } else {
+                Aplicacao.get().getExplainerController().explainVariavel(variavelBase);
+            }
         });
         if (variavelBase.equals(getModel().getSaiDaBase())) {
+            label = buildExplicacao(variavelBase.getName(), () -> {
+                Aplicacao.get().getExplainerController().explainSaiDaBase(variavelBase);
+            });
             label.setTextFill(Color.RED);
         }
         headerNodes.add(label);
-        headerNodes.add(buildExplicacao(String.valueOf(simplexLine.getValor()), () -> {
-            Aplicacao.get().getExplainerController().explainValorIteracao0(variavelBase);
-        }));
+        headerNodes.add(buildLabelValor(simplexLine, variavelBase));
         for (Variavel variavel : getModel().getVariaveis()) {
-            headerNodes.add(buildExplicacao(formatter.format(simplexLine.getCoeficiente(variavel)), () -> {
-                Aplicacao.get().getExplainerController().explainCoeficienteIteracao0(variavelBase, variavel);
-            }));
+            headerNodes.add(buildLabelCoeficiente(simplexLine, variavel, variavelBase));
         }
         headerNodes.add(new Label(String.valueOf(line - 1)));
         headerNodes.add(buildExplicacao(montaLabelDivisao(simplexLine), () -> {
             Aplicacao.get().getExplainerController().explainResultadoDivisao(getModel(), simplexLine);
         }));
         return headerNodes.toArray(new Node[]{});
+    }
+
+    /**
+     * Cria o label de valor
+     * 
+     * @param simplexLine
+     * @param variavelBase 
+     */
+    private Label buildLabelValor(SimplexTableauLine simplexLine, Variavel variavelBase) {
+        if (iteracao == 0) {
+            return buildExplicacao(formatter.format(simplexLine.getValor()), () -> {
+                Aplicacao.get().getExplainerController().explainValorIteracao0(variavelBase);
+            });
+        } else {
+            if (simplexLine.getVariavel().equals(getModel().getIteracaoAnterior().getEntraNaBase())) {
+                return buildExplicacao(formatter.format(simplexLine.getValor()), () -> {
+                    Aplicacao.get().getExplainerController().explainLinhaEntrouBase(getModel().getIteracaoAnterior(), getModel());
+                });
+            } else {
+                return buildExplicacao(formatter.format(simplexLine.getValor()), () -> {
+                    Aplicacao.get().getExplainerController().explainOutraLinha(getModel().getIteracaoAnterior(), getModel(), simplexLine.getVariavel());
+                });
+            }
+        }
+    }
+    
+    /**
+     * Cria o label de coeficiente
+     * 
+     * @param simplexLine
+     * @param variavel
+     * @param variavelBase
+     * @return Label    
+     */
+    private Label buildLabelCoeficiente( SimplexTableauLine simplexLine, Variavel variavel, Variavel variavelBase) {
+        if (iteracao == 0) {
+            return buildExplicacao(formatter.format(simplexLine.getCoeficiente(variavel)), () -> {
+            Aplicacao.get().getExplainerController().explainCoeficienteIteracao0(variavelBase, variavel);
+        });
+        } else {
+            if (simplexLine.getVariavel().equals(getModel().getIteracaoAnterior().getEntraNaBase())) {
+                return buildExplicacao(formatter.format(simplexLine.getCoeficiente(variavel)), () -> {
+                    Aplicacao.get().getExplainerController().explainLinhaEntrouBase(getModel().getIteracaoAnterior(), getModel());
+                });
+            } else {
+                return buildExplicacao(formatter.format(simplexLine.getCoeficiente(variavel)), () -> {
+                    Aplicacao.get().getExplainerController().explainOutraLinha(getModel().getIteracaoAnterior(), getModel(), simplexLine.getVariavel());
+                });
+            }
+        } 
     }
     
     /**

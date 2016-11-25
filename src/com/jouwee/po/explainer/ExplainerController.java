@@ -8,6 +8,8 @@ import com.jouwee.po.model.SimplexTableauModel;
 import com.jouwee.po.model.Variavel;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +20,8 @@ import java.util.Map;
  */
 public class ExplainerController {
 
+    /** Formatter */
+    private final NumberFormat formatter;
     /** Painél de explicações */
     private final ExplainPanel panel;
     /** Explicações */
@@ -30,6 +34,7 @@ public class ExplainerController {
      */
     public ExplainerController(ExplainPanel panel) {
         this.panel = panel;
+        formatter = new DecimalFormat("#0.00");
     }
     
     /**
@@ -102,6 +107,70 @@ public class ExplainerController {
         loadExplicacao("entraNaBase", new String[][] {
             {"variavel", variavel.getName()},
             {"coeficiente", String.valueOf(coeficiente)},
+        });
+        showExplainPanel();
+    }
+    
+    /**
+     * Explica porque uma variavel sai da base
+     * 
+     * @param variavel
+     */
+    public void explainSaiDaBase(Variavel variavel) {
+        loadExplicacao("saiDaBase", new String[][] {
+            {"variavel", variavel.getName()},
+        });
+        showExplainPanel();
+    }
+    
+    /**
+     * Explica de onde veio a variável
+     * 
+     * @param variavel
+     */
+    public void explainVariavel(Variavel variavel) {
+        loadExplicacao("variavel", new String[][] {
+            {"variavel", variavel.getName()},
+        });
+        showExplainPanel();
+    }
+
+    /**
+     * Explica o valor calculado da variável que entrou na base
+     * 
+     * @param iteracaoAnterior
+     * @param iteracao 
+     */
+    public void explainLinhaEntrouBase(SimplexTableauModel iteracaoAnterior, SimplexTableauModel iteracao) {
+        loadExplicacao("variavelEntrouBase", new String[][] {
+            {"variavelEntrouBase", iteracaoAnterior.getEntraNaBase().getName()},
+            {"variavelSaiuBase", iteracaoAnterior.getSaiDaBase().getName()},
+            {"coeficienteEntrouNaBase", formatter.format(iteracaoAnterior.getLine(iteracaoAnterior.getSaiDaBase()).getCoeficiente(iteracaoAnterior.getEntraNaBase()))},
+            {"expressaoIteracaoAnterior", iteracaoAnterior.getLine(iteracaoAnterior.getSaiDaBase()).getEquation().toString()},
+            {"expressaoIteracaoAtual", iteracao.getLine(iteracaoAnterior.getEntraNaBase()).getEquation().toString()},
+        });
+        showExplainPanel();
+    }
+    
+    /**
+     * Explica uma outra linha qualquer do tableau.
+     * 
+     * @param iteracaoAnterior
+     * @param iteracao 
+     * @param current 
+     */
+    public void explainOutraLinha(SimplexTableauModel iteracaoAnterior, SimplexTableauModel iteracao, Variavel current) {
+        double coeficienteEntrouNaBase = iteracaoAnterior.getLine(iteracaoAnterior.getSaiDaBase()).getCoeficiente(iteracaoAnterior.getEntraNaBase());
+        double coeficienteEntrouNaBaseLinhaAtual = iteracao.getLine(iteracaoAnterior.getEntraNaBase()).getCoeficiente(iteracaoAnterior.getEntraNaBase());
+        loadExplicacao("calculoLinha", new String[][] {
+            {"variavelEntrouBase", iteracaoAnterior.getEntraNaBase().getName()},
+            {"variavelSaiuBase", iteracaoAnterior.getSaiDaBase().getName()},
+            {"coeficienteEntrouNaBase", formatter.format(coeficienteEntrouNaBase)},
+            {"coeficienteEntrouNaBaseLinhaAtual", formatter.format(coeficienteEntrouNaBaseLinhaAtual)},
+            {"multiplicador", formatter.format(coeficienteEntrouNaBase * coeficienteEntrouNaBaseLinhaAtual)},
+            {"expressaoIteracaoAnterior", iteracaoAnterior.getLine(iteracaoAnterior.getSaiDaBase()).getEquation().toString()},
+            {"expressaoPivo", iteracao.getLine(iteracaoAnterior.getEntraNaBase()).getEquation().toString()},
+            {"expressaoAtual", iteracao.getLine(current).getEquation().toString()},
         });
         showExplainPanel();
     }
@@ -191,7 +260,7 @@ public class ExplainerController {
             return equation.toString();
         }
     }
-    
+
     /**
      * Explicações
      */

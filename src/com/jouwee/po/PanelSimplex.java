@@ -21,6 +21,8 @@ public class PanelSimplex extends JavaFXView<SimplexModel> {
     private PanelAlgoritmoSimplex panelAlgoritmoSimplex;
     /** Panel do enunciado */
     private PanelEnunciado panelEnunciado;
+    /** Thread do algoritmo */
+    private Thread threadAlgoritmo;
 
     /**
      * Cria o panel do problema simplex
@@ -63,8 +65,15 @@ public class PanelSimplex extends JavaFXView<SimplexModel> {
      * Executa algoritmo
      */
     private void executaAlgoritmo() {
-        AlgoritmoSimplex algoritmo = new AlgoritmoSimplex(getModel());
-        algoritmo.executa();
+        threadAlgoritmo = new Thread(() -> {
+            try {
+                AlgoritmoSimplex algoritmo = new AlgoritmoSimplex(getModel());
+                algoritmo.executa();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        threadAlgoritmo.start();
     }
 
     /**
