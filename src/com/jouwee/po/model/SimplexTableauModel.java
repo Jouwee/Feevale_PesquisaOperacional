@@ -4,6 +4,7 @@ import com.jouwee.commons.mvc.Model;
 import com.jouwee.commons.mvc.PropertyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Tableau do Simplex
@@ -227,6 +228,60 @@ public class SimplexTableauModel implements Model {
      */
     public double getFolga(Restricao restricao) {
         return getValor(getVariavel(restricao));
+    }
+
+    /**
+     * Retorna se a iteração é final
+     * 
+     * @return boolean
+     */
+    public boolean isIteracaoFinal() {
+        SimplexTableauLine funcaoObjetivo = getLineFuncaoObjetivo();
+        for (Map.Entry<Variavel, Double> entry : funcaoObjetivo.getCoeficientes().entrySet()) {
+            if (entry.getValue() < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * Verifica se esta iteração indica que tem multiplas soluções
+     * 
+     * @return boolean
+     */
+    public boolean isMultiplasSolucoes() {
+        return !getVariaveisSolucoes().isEmpty();
+    }
+    
+    /**
+     * Verifica se esta iteração indica que tem multiplas soluções
+     * 
+     * @return List<Variavel>
+     */
+    public List<Variavel> getVariaveisSolucoes() {
+        List<Variavel> vars = new ArrayList<>();
+        if (!isIteracaoFinal()) {
+            return vars;
+        }
+        for (Variavel variavel : variaveis) {
+            if (!isVariavelBase(variavel)) {
+                if (getLineFuncaoObjetivo().getCoeficiente(variavel) == 0)  {
+                    vars.add(variavel);
+                }
+            }
+        }
+        return vars;
+    }
+
+    /**
+     * Retorna se a variável é base
+     * 
+     * @param variavel
+     * @return 
+     */
+    public boolean isVariavelBase(Variavel variavel) {
+        return getLine(variavel) != null;
     }
     
 }

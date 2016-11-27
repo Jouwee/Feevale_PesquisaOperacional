@@ -247,13 +247,7 @@ public class AlgoritmoSimplex {
      * @return boolean
      */
     private boolean isIteracaoFinal() {
-        SimplexTableauLine funcaoObjetivo = iteracao.getLineFuncaoObjetivo();
-        for (Map.Entry<Variavel, Double> entry : funcaoObjetivo.getCoeficientes().entrySet()) {
-            if (entry.getValue() < 0) {
-                return false;
-            }
-        }
-        return true;
+        return iteracao.isIteracaoFinal();
     }
 
     /**

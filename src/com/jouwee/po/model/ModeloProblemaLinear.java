@@ -18,7 +18,7 @@ public class ModeloProblemaLinear implements Model {
     /** Restrições */
     private final List<Restricao> restricoes;
     /** Redirecionador de eventos */
-    private final EventRedirector redirecionador;
+    private transient final EventRedirector redirecionador;
     /** Função para resolução */
     private FuncaoObjetivo funcaoObjetivo;
 

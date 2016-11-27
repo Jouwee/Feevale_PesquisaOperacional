@@ -14,9 +14,9 @@ import javafx.collections.ObservableList;
 public class SimplexModel implements Model {
 
     /** Iterações para resolução do Simplex */
-    private final ObservableList<SimplexTableauModel> iteracoes;
+    private transient final ObservableList<SimplexTableauModel> iteracoes;
     /** Erro de validação */
-    private String erroValidacao;
+    private transient String erroValidacao;
     /** Enunciado da questão */
     private Enunciado enunciado;
     /** Modelo do problema */

@@ -16,9 +16,9 @@ public class Variavel implements Model {
     /** Descrição da variável */
     private String descricao;
     /** Indica se a variável é da função objetivo */
-    private final boolean funcaoObjetivo;
+    private transient final boolean funcaoObjetivo;
     /** Restrição que esta restrição é folga */
-    private final Restricao restricaoFolga;
+    private transient final Restricao restricaoFolga;
 
     /**
      * Cria uma nova variável

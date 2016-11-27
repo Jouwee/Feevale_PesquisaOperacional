@@ -10,6 +10,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -46,6 +47,9 @@ public class PanelIteracaoSimplex extends JavaFXView<SimplexTableauModel> {
     public void initGui() {
         getStylesheets().add(PanelIteracaoSimplex.class.getResource("PanelIteracaoSimplex.css").toExternalForm());
         setCenter(buildPanel());
+        if (getModel().isMultiplasSolucoes()) {
+            setBottom(buildMultiplasSolucoes());
+        }
     }
     
     /**
@@ -196,6 +200,27 @@ public class PanelIteracaoSimplex extends JavaFXView<SimplexTableauModel> {
      */
     private String montaLabelDivisao(SimplexTableauLine simplexLine) {
         return simplexLine.getDivisaoFormatado(getModel().getEntraNaBase());
+    }
+
+    /**
+     * Cria o painel que indica as multiplas soluções
+     * 
+     * @return Node
+     */
+    private Node buildMultiplasSolucoes() {
+        StringBuilder sb = new StringBuilder();
+        for (Variavel variavel : getModel().getVariaveisSolucoes()) {
+            if (sb.length() != 0) {
+                sb.append(", ");
+            }
+            sb.append(variavel.getName());
+        }
+        sb.insert(0, "Existem variáveis não básicas com valor zero (");
+        sb.append("), e isso indica que esta não é a única solução ótima");
+        Label label = new Label(sb.toString());
+        label.setPadding(new Insets(10, 0, 10, 0));
+        label.setStyle("-fx-text-fill: #814190; -fx-font-size: 10pt; -fx-font-weight: bold;");
+        return label;
     }
 
 }

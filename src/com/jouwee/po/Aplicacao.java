@@ -6,7 +6,6 @@ import com.jouwee.commons.application.ModelEvent;
 import com.jouwee.po.explainer.ExplainPanel;
 import com.jouwee.po.explainer.ExplainerController;
 import com.jouwee.po.model.SimplexModel;
-import com.jouwee.po.simplex.AlgoritmoSimplex;
 
 /**
  * Classe principal da aplicação
@@ -61,6 +60,7 @@ public class Aplicacao extends Application<SimplexModel> {
         addLayer(buildExplainPanel());
         getActionRepository().add(new ActionNovo());
         getActionRepository().add(new SalvarAction());
+        getActionRepository().add(new AbrirAction());
         getActionRepository().add(new AbrirExemploAction());
     }
 

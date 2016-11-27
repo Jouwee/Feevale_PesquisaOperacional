@@ -16,7 +16,7 @@ public class Variaveis implements Model {
     /** Variáveis */
     public final List<Variavel> variaveis;
     /** Redirecionador de eventos */
-    private final EventRedirector redirecionador;
+    private transient final EventRedirector redirecionador;
 
     /**
      * Cria as variáveis do programa

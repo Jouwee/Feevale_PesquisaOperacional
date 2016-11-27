@@ -4,14 +4,11 @@ package com.jouwee.po;
 import com.google.gson.GsonBuilder;
 import com.jouwee.commons.application.Action;
 import com.jouwee.commons.application.ActionEvent;
-import com.jouwee.commons.math.EquationParser;
-import com.jouwee.commons.math.ExpressionParser;
-import com.jouwee.commons.math.ParsingException;
-import com.jouwee.po.model.FuncaoObjetivo;
-import com.jouwee.po.model.Objetivo;
-import com.jouwee.po.model.Restricao;
-import com.jouwee.po.model.SimplexModel;
-import com.jouwee.po.model.Variavel;
+import com.jouwee.commons.math.ExpressionNode;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import javafx.stage.FileChooser;
 
 /**
  *
@@ -28,7 +25,21 @@ public class SalvarAction extends Action {
 
     @Override
     public void performed(ActionEvent event) {
-        System.out.println(new GsonBuilder().create().toJson(Aplicacao.get().getModel()));
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Salvar");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Arquivos JSimplex", "*.jsimplex"),
+                new FileChooser.ExtensionFilter("Arquivos JSon", "*.json"),
+                new FileChooser.ExtensionFilter("Todos os arquivos", "*.*")
+            );
+        File file = fileChooser.showSaveDialog(Aplicacao.get().getStage());
+        if (file != null) {
+            try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file))) {
+                new GsonBuilder().registerTypeAdapter(ExpressionNode.class, new InterfaceAdapter<>()).create().toJson(Aplicacao.get().getModel(), writer);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
